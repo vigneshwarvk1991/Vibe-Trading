@@ -118,3 +118,23 @@ bench_report.json
 # Grounding ledger persisted by ad-hoc verification scripts into tests/
 agent/tests/artifacts/
 .idea/*
+
+# Isolated references
+references/
+
+# Personal wealth, portfolio, and confidential data
+core_wealth/
+*portfolio*
+*finance*
+EQUITY_PLAYBOOK.md
+multibagger_*.csv
+multibagger_screen.py
+*.csv
+*.tsv
+*.xlsx
+*.sheet
+*.local.*
+config.local.json
+.env*
+!agent/.env.example
+

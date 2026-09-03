@@ -21,8 +21,13 @@ from rich.console import Console
 from cli._version import __version__ as APP_VERSION
 from src.ui_services import build_run_analysis, load_run_context  # noqa: F401
 
-# UTF-8 on Windows
+# Ensure agent directory is in sys.path and api_server is in sys.modules
 import sys as _sys
+_AGENT_DIR = Path(__file__).resolve().parent
+if str(_AGENT_DIR) not in _sys.path:
+    _sys.path.insert(0, str(_AGENT_DIR))
+_sys.modules.setdefault("api_server", _sys.modules[__name__])
+
 for _s in ("stdout", "stderr"):
     _r = getattr(getattr(_sys, _s, None), "reconfigure", None)
     if callable(_r):
