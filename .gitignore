@@ -126,7 +126,6 @@ references/
 core_wealth/
 *portfolio*
 *finance*
-EQUITY_PLAYBOOK.md
 multibagger_*.csv
 multibagger_screen.py
 *.csv
