@@ -39,11 +39,11 @@
     • Holding horizon: 30–90 days                     • Holding horizon: 25–40 days
     • Target: 25–40% CAGR                             • Target: 25–35% CAGR
 
-  TRACK 2: Multibagger Compounders (₹2,50,000)      TRACK 2: US Moat Compounders (₹2,50,000 / ~$2,900)
-    • 5–6 Core Compounders × ₹40,000 – ₹50,000        • 5 World-Class Monopolies × $500 – $600 USD
-    • Tranches: 50% initial, 25% dip 1, 25% dip 2    • Tranches: 50% initial, 25% dip 1, 25% dip 2
-    • Holding horizon: 1–3+ years (No stop-loss)      • Holding horizon: 1–3+ years (No stop-loss)
-    • Sell ONLY on fundamental business breakdown     • Sell ONLY on structural moat deterioration
+  TRACK 2: Institutional Quality Compounders (₹2,50,000)  TRACK 2: US Moat Compounders (₹2,50,000 / ~$2,900)
+    • 8–10 Core Positions × ₹25,000 – ₹31,250 (10%–12.5%)   • 5 World-Class Monopolies × $500 – $600 USD
+    • Tranches: 65% initial conviction, 35% milestone dip   • Tranches: 50% initial, 25% dip 1, 25% dip 2
+    • Holding horizon: 1–3+ years (Zero stop-loss)          • Holding horizon: 1–3+ years (No stop-loss)
+    • Sell ONLY on forensic / moat breakdown                • Sell ONLY on structural moat deterioration
 ========================================================================================================
 ```
 
@@ -101,39 +101,101 @@ Any Nifty 500 stock that satisfies the full institutional rulebook is eligible f
 
 | Slot | Stock | Entry Date | Entry Price | Shares | Stop-Loss | Trail Stop | Status |
 |:---|:---|:---|:---|:---|:---|:---|:---|
-| 1 | TITAN.NS | 27-Aug-2026 | ₹5,139.30 | 19 | ₹4,882.35 | ₹4,978.31 | 🟢 ACTIVE |
-| 2 | — | — | — | — | — | — | 💰 CASH |
-| 3 | — | — | — | — | — | — | 💰 CASH |
-| 4 | — | — | — | — | — | — | 💰 CASH |
-| 5 | — | — | — | — | — | — | 💰 CASH |
+| 1 | HAL.NS | 28-Aug-2026 | ₹4,861.00 | 2 | ₹4,617.95 | ₹4,642.75 | 🟢 ACTIVE |
+| 2 | DIVISLAB.NS | 03-Sep-2026 | ₹9,244.00 | 3 | ₹8,781.80 | ₹8,850.00 | 🟢 ACTIVE |
+| 3 | CHENNPETRO.NS | 10-Sep-2026 | ₹1,594.00 | 30 | ₹1,514.30 | ₹1,514.30 | 🟢 ACTIVE |
+| 4 | ADANIPORTS.NS | 10-Sep-2026 | ₹1,768.00 | 28 | ₹1,679.60 | ₹1,679.60 | 🟢 ACTIVE |
+| 5 | — | — | — | — | — | — | 💰 CASH (Slot 5: ₹50,000 capacity · ₹1,15,222 free cash available) |
+
+*Capital Deployment Note:* Slots 1 (HAL) and 2 (DIVISLAB) were entered with 2 and 3 shares respectively (₹37,454 combined) prior to capital expansion to ₹2.5L. Slots 3 (CHENNPETRO) and 4 (ADANIPORTS) are sized at the full ₹50,000 slot capacity. Total invested: ₹1,34,778. Free account cash: ₹1,15,222. Total portfolio risk heat: ₹6,738.90 (2.70% of ₹2,50,000 equity, safely below 5.0% maximum risk ceiling).
 
 ---
 
-## 3. TRACK 2 — Multibagger Investing Framework
+## 3. TRACK 2 — Multibagger Investing Framework (Four-Tier Institutional Compounder System)
 
-### The 5 Pillars (ALL Must Be True)
+### The Problem with Naive Screens (Why the Old 5 Pillars Failed)
+1. **The Cyclical PEG Trap:** Naive trailing PEG ratios (< 1.5) flag cyclical commodity stocks (like Suzlon, sugar, paper, or steel mills) at the exact cyclical top when earnings temporarily explode, leading to devastating drawdowns.
+2. **Single-Point ROE Illusion:** Single-point ROE from snapshot data (`t.info`) fails to detect leverage-driven returns, unbilled revenue, or sudden one-off asset sales.
+3. **Financials Distortion:** Applying debt-to-equity (< 0.5) and ROCE to Banks/NBFCs produces absurd conclusions because lenders operate by taking on debt (deposits/borrowings) as their core raw material.
+4. **Catastrophic Concentration Risk:** Allocating ₹2,50,000 into only 5 stocks (₹50k each) with zero stop-loss means a single corporate governance failure or structural disruption wipes out 20% of the entire investing capital.
 
-| # | Pillar | Threshold | Why It Matters |
-|:---|:---|:---|:---|
-| 1 | **ROCE** | > 20% for 5 consecutive years | Business earns extraordinary returns on capital |
-| 2 | **Revenue Growth** | > 15% CAGR over 5 years | Structural market expansion |
-| 3 | **Debt-to-Equity** | < 0.5 (ideally debt-free) | Survives downturns without bankruptcy risk |
-| 4 | **Promoter Holding** | > 50%, increasing, no pledge | Management's wealth is tied to yours |
-| 5 | **PEG Ratio** | < 1.5 | Not overpaying for growth |
+---
 
-### Multibagger Sell Rules (ONLY Sell If)
-- ❌ ROCE drops below 15% for 2 consecutive years.
-- ❌ Management pledges shares or dilutes equity aggressively.
-- ❌ Revenue growth declines to < 10% for 2 consecutive years.
-- ❌ A structural disruption threatens the core business model.
-- ❌ Forensic accounting red flags (cash flow diverging from reported profits).
+### The Four-Tier Institutional Compounder Framework (ALL Must Pass)
 
-### Multibagger Buy Rules
-- ✅ Stock passes all 5 Pillars.
-- ✅ Investment Committee Swarm gives a Buy verdict.
-- ✅ Investor Lens score > 70/100.
-- ✅ Buy in tranches: 50% at first entry, 25% on a 10% dip, 25% on a 20% dip.
-- ✅ **Add on dips** when fundamentals are intact (the opposite of panic selling).
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│              TIER 1: UNIVERSE & LIQUIDITY GATE (Pre-Screening)                  │
+│  • Universe: Nifty Midcap 150 + Nifty Smallcap 250 + Liquid Microcaps           │
+│  • Market Cap ≥ ₹1,000 Cr  ·  20-Day Avg Daily Turnover ≥ ₹2.0 Cr               │
+│  • STRICT EXCLUSION: Banks, Financial Services, and NBFCs (Separate Model)      │
+└──────────────────────────────────────┬──────────────────────────────────────────┘
+                                       │ (Passes Liquidity)
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│            TIER 2: FORENSIC ACCOUNTING GATES (Pass / Fail — Zero Tolerance)     │
+│  • Sloan Accrual Test: 5-Yr Cumulative CFO / Cumulative PAT ≥ 0.75 (Cash is Real)│
+│  • CWIP / Gross Block Ratio ≤ 25% (No fake capital work-in-progress masking opex)│
+│  • Debtor Days Growth Discipline: Receivables CAGR ≤ 1.2× Revenue CAGR (3-5 Yr) │
+│  • Promoter Integrity: Promoter Holding ≥ 45%  ·  Total Promoter Pledge ≤ 5.0%  │
+│  • Auditor Quality: Clean unmodified audit opinion; zero mid-term resignations   │
+└──────────────────────────────────────┬──────────────────────────────────────────┘
+                                       │ (Passes Forensic Audit)
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│          TIER 3: SECULAR MOAT & COMPOUNDING ENGINE (Audited Historicals)        │
+│  • Audited ROCE: ROCE ≥ 18.0% in at least 4 of the last 5 fiscal years          │
+│  • Pricing Power: Gross Margin ≥ 30.0% and flat or expanding over 5 years       │
+│  • Growth Engine: 5-Year Revenue CAGR ≥ 12.0%  ·  5-Year PAT CAGR ≥ 15.0%        │
+│  • Reinvestment Discipline: Capex / CFO between 25% and 75% (High Reinvestment) │
+│  • Balance Sheet Fortress: Debt-to-Equity < 0.50 (or Net Cash / Debt-Free)      │
+└──────────────────────────────────────┬──────────────────────────────────────────┘
+                                       │ (Passes Compounder Engine)
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│             TIER 4: VALUATION GUARDRAIL & CYCLICAL ANTI-TRAP SHIELD             │
+│  • Cash Flow Yield: Free Cash Flow Yield ≥ 2.0% OR EV/EBITDA < 5-Year Median     │
+│  • Cyclical Top Filter: REJECT if 1-Yr EPS spiked >50% while 5-Yr median < 10%  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Position Sizing: Institutional 8 to 10 Slot Architecture
+
+To eliminate the fatal concentration risk of a 5-stock portfolio with zero stop-loss, Track 2 capital is distributed across **8 to 10 high-conviction compounders**:
+
+| Parameter | Calculation / Protocol |
+|:---|:---|
+| **Total Track 2 Capital** | **₹2,50,000** (Clean slate as of September 2026) |
+| **Number of Positions** | **8 to 10 Quality Compounders** |
+| **Capital Allocation per Stock** | **₹25,000 to ₹31,250 per company** (10.0% to 12.5% max weight) |
+| **Sector Diversification** | Maximum **2 positions** from any single industry sector |
+| **Stop-Loss Policy** | **Zero Hard Stop-Loss** (True multi-year business compounding) |
+| **Holding Horizon** | **1 to 3+ Years** (Evaluated strictly on quarterly earnings fundamentals) |
+
+---
+
+### Tranche Accumulation Protocol (Institutional Dip-Buying)
+*Never commit 100% of a long-term position in a single market order.*
+
+* 🎯 **Tranche 1 (65% — ₹16,250 to ₹20,312):** Initial conviction entry immediately upon passing all 4 Tiers and receiving Investment Committee Swarm Buy approval.
+* 🛡️ **Tranche 2 (35% — ₹8,750 to ₹10,938):** Milestone accumulation entry deployed ONLY upon:
+  1. **A 7% to 12% market or sector-wide pullback** where company fundamentals remain completely pristine; OR
+  2. **90-day post-entry quarterly earnings verification** confirming continued ROCE $\ge 18\%$ and Sloan cash conversion (CFO/PAT $\ge 0.75$).
+
+---
+
+### Multibagger Sell Rules (Fundamental Kill Switches — NO Panic Selling)
+
+> **Iron Rule:** Multibaggers are NEVER sold due to general market corrections, index volatility, or macroeconomic geopolitical noise. A position is exited IMMEDIATELY (100% liquidated) ONLY if ANY of the following fundamental breakdown criteria occur:
+
+1. ❌ **ROCE Breakdown:** ROCE drops below $15.0\%$ for 2 consecutive fiscal years (signals moat erosion or bad capital allocation).
+2. ❌ **Forensic Accounting Red Flag:** Sloan cash conversion fails (5-year cumulative CFO / PAT drops below $0.60$), or statutory auditor resigns mid-term.
+3. ❌ **Promoter Integrity Failure:** Total promoter pledge exceeds $10.0\%$, promoter aggressively sells equity in open market, or promoter faces SEBI/regulatory fraud indictment.
+4. ❌ **Margin Collapse:** Gross margin compresses by $> 300\text{ bps}$ for 2 consecutive fiscal years due to loss of pricing power or commoditization.
+5. ❌ **Perpetual CWIP Trap:** Capital Work-in-Progress (CWIP) exceeds $35\%$ of Gross Block for over 18 months without commercial production or revenue generation.
+6. ❌ **Structural Obsolescence:** Emergence of disruptive substitute technology or regulatory ban that permanently impairs the company's terminal value.
 
 ---
 
@@ -151,14 +213,14 @@ Run our Positional Trend & Breakout Market Scan for Indian Equities as of today'
 BHARTIARTL.NS, M&M.NS, SUNPHARMA.NS, ICICIBANK.NS, TRENT.NS, BEL.NS, HAL.NS, TITAN.NS.
 
 My Current Portfolio Holdings:
-- Slot 1: [STOCK] ([SHARES] shares bought @ ₹[PRICE])
-- Slot 2: [STOCK or CASH] (₹[AMOUNT] available)
-- Slot 3: [STOCK or CASH] (₹[AMOUNT] available)
-- Slot 4: [STOCK or CASH] (₹[AMOUNT] available)
-- Slot 5: [STOCK or CASH] (₹[AMOUNT] available)
+- Slot 1: HAL.NS (2 shares bought @ ₹4,861.00, SL ₹4,617.95, Trail ₹4,642.75)
+- Slot 2: DIVISLAB.NS (3 shares bought @ ₹9,244.00, SL ₹8,781.80, Trail ₹8,850.00)
+- Slot 3: CHENNPETRO.NS (30 shares bought @ ₹1,594.00, SL ₹1,514.30)
+- Slot 4: ADANIPORTS.NS (28 shares bought @ ₹1,768.00, SL ₹1,679.60)
+- Slot 5: CASH (₹50,000 slot capacity, ₹1,15,222 free cash available)
 
 Please calculate:
-1. NEW ENTRY CHECK: Did any watchlist stock close at a fresh 20-day High today while trading above their 200-day EMA? If yes, calculate the exact quantity to buy for my ₹1,00,000 slot and the 5% initial stop-loss.
+1. NEW ENTRY CHECK: Did any watchlist stock close at a fresh 20-day High today while trading above their 200-day EMA? If yes, calculate the exact quantity to buy for my ₹50,000 slot and the 5% initial stop-loss.
 2. TRAILING STOP UPDATE: For my open holdings, calculate the updated 2.5x ATR(14) trailing stop level based on today's session high. Should I update my stop-loss GTT or exit?
 3. SUMMARY TABLE: Give me an executive trade execution sheet for tomorrow morning.
 ```
@@ -182,17 +244,31 @@ Run a momentum leadership scan across the Nifty 100 universe as of today:
 *Run on the 1st weekend of every month*
 
 ```text
-Screen the Nifty Midcap 150 and Nifty Smallcap 250 universe for potential multibagger candidates:
+Screen the Nifty Midcap 150, Nifty Smallcap 250, and liquid microcap universe for institutional multibagger compounders:
 
-1. ROCE > 20% for each of the last 5 years.
-2. Revenue CAGR > 15% over the last 5 years.
-3. PAT CAGR > 18% over the last 5 years.
-4. Debt-to-Equity Ratio < 0.5 (prefer debt-free).
-5. Promoter Holding > 50% with no pledge.
-6. Free Cash Flow positive for at least 4 of the last 5 years.
-7. PEG Ratio < 1.5.
+TIER 1 — UNIVERSE & LIQUIDITY:
+1. Market Cap ≥ ₹1,000 Cr and 20-day Average Daily Turnover ≥ ₹2.0 Cr.
+2. Strictly exclude Financials, Banks, and NBFCs (non-financials only).
 
-Rank survivors by composite score of ROCE + Revenue Growth + FCF Yield. Show the top 10 with all key metrics.
+TIER 2 — FORENSIC ACCOUNTING GATES (Must Pass All):
+3. Sloan Accrual Test: 5-year cumulative CFO / Cumulative PAT ≥ 0.75 (Cash Flow aligns with net profits).
+4. CWIP / Gross Block Ratio ≤ 25% (No stalled or inflated unfinished assets).
+5. Debtor Days Growth: Receivables CAGR ≤ 1.2× Revenue CAGR over past 3 years.
+6. Promoter Holding ≥ 45% with Total Promoter Pledge ≤ 5.0%.
+7. Clean unmodified audit report with zero mid-term auditor resignations in past 3 years.
+
+TIER 3 — SECULAR MOAT & COMPOUNDING ENGINE:
+8. Audited ROCE ≥ 18% in at least 4 of the last 5 fiscal years.
+9. Gross Margin ≥ 30% and flat or expanding over 5 years.
+10. 5-year Revenue CAGR ≥ 12% and 5-year PAT CAGR ≥ 15%.
+11. Reinvestment Rate: Capex / CFO between 25% and 75%.
+12. Debt-to-Equity < 0.50 (or Net Cash).
+
+TIER 4 — VALUATION GUARDRAIL:
+13. Free Cash Flow Yield ≥ 2.0% OR EV/EBITDA < 5-year historical median.
+14. Cyclical Top Filter: Reject 1-year earnings spikes (>50%) where 5-year median growth is < 10%.
+
+Rank survivors by composite quality score (ROCE stability + CFO/PAT conversion + FCF yield). Display top 10 with full diagnostic metrics.
 ```
 
 ---
@@ -201,15 +277,28 @@ Rank survivors by composite score of ROCE + Revenue Growth + FCF Yield. Show the
 *Run on each multibagger candidate before investing*
 
 ```text
-Run a comprehensive institutional equity research analysis on [TICKER.NS]:
+Run a comprehensive institutional equity research teardown on [TICKER.NS] using the Four-Tier Compounder Framework:
 
-1. Business Model: What does the company do? What is the competitive moat?
-2. Financial Quality (5-Year Trends): Revenue, EBITDA, PAT, ROCE, ROE, FCF, Debt/Equity.
-3. Management Quality: Promoter holding trend, insider transactions, capital allocation track record, dividend history.
-4. Growth Runway: Total addressable market? Current market share? Realistic growth ceiling?
-5. Valuation: Current P/E, PEG, EV/EBITDA vs 5-year median. Fair value estimate.
-6. Risks & Kill Criteria: What could go wrong? At what point should I exit?
-7. Verdict: Buy, Hold, or Avoid at current price? If Buy, what is a good entry zone?
+1. Business Model & Moat: What is the core business? What is the pricing power source (network effect, high switching costs, patents, cost leadership)? Why can competitors not replicate this?
+2. Forensic Accounting Teardown:
+   - Sloan Accrual Check: 5-year cumulative CFO vs PAT (is CFO/PAT ≥ 0.75?).
+   - Capitalization Check: CWIP as % of Gross Block (is CWIP ≤ 25%?).
+   - Working Capital Discipline: Receivables growth vs Revenue growth. Are Debtor Days stable?
+   - Balance Sheet Quality: Debt/Equity, contingent liabilities, related-party transactions, auditor identity and tenure.
+3. Compounding Engine (5-Year Historicals):
+   - Audited ROCE trend across FY20–FY25 (consistent ≥ 18%?).
+   - Gross Margin and EBITDA Margin trajectory (expanding or compressing?).
+   - Revenue and PAT CAGRs over 3 and 5 years.
+   - Reinvestment Rate (Capex / CFO): Are they reinvesting at high return on capital?
+4. Management Track Record:
+   - Promoter holding and pledge trend over last 8 quarters.
+   - Capital allocation history: Past M&A track record, return on past capex, dividend payout prudence.
+5. Valuation & Cyclicality Check:
+   - Current EV/EBITDA and P/E vs 5-year and 10-year historical medians.
+   - Free Cash Flow Yield at current market cap.
+   - Cyclical Top Filter: Is current high profit an anomalous commodity cycle peak or secular structural expansion?
+6. Kill Criteria & Risk Matrix: What specific events would trigger an immediate exit?
+7. Verdict & Tranche Execution: Buy, Wait, or Reject? If Buy, specify Tranche 1 (65% @ ₹[PRICE]) and Tranche 2 (35% milestone accumulation trigger).
 ```
 
 ---
@@ -218,12 +307,13 @@ Run a comprehensive institutional equity research analysis on [TICKER.NS]:
 *Run before committing capital to any multibagger*
 
 ```text
-Run the investment_committee swarm on [TICKER.NS] at current market price.
+Run the investment_committee swarm on [TICKER.NS] under the Four-Tier Institutional Compounder Framework.
 
-The Bull Analyst should argue why this stock can 3x–5x over 3 years.
-The Bear Analyst should argue why this stock could underperform or decline.
-The Risk Manager should identify key risks and position sizing.
-The Portfolio Manager should give the final verdict: Buy, Avoid, or Wait for better price.
+- The Bull Analyst: Present the structural 3-year compounding thesis (addressing addressable market runway, pricing power, ROCE durability, and reinvestment rate).
+- The Bear Analyst: Stress-test every vulnerability (cyclical peak risk, customer concentration, input cost inflation, regulatory threats, technological disruption).
+- The Forensic Accountant: Audit the financial statements (Sloan accrual test CFO/PAT, CWIP/Gross Block, debtor days, related party transactions, promoter pledge, and auditor quality).
+- The Risk Manager: Audit sector concentration, verify 8–10 position sizing (₹25,000–₹31,250 allocation, max 12.5%), and establish Tranche 1 (65%) and Tranche 2 (35%) accumulation rules.
+- The Portfolio Manager: Deliver the final institutional verdict: Conviction BUY (Approved for Tranche 1), WAIT FOR MILESTONE, or REJECT (with explicit failure tier).
 ```
 
 ---
@@ -231,13 +321,14 @@ The Portfolio Manager should give the final verdict: Buy, Avoid, or Wait for bet
 ### 4F. INVESTOR LENS ANALYSIS (Track 2)
 
 ```text
-Analyze [TICKER.NS] through the investment frameworks of:
-1. Warren Buffett: Durable competitive moat? ROCE > cost of capital?
-2. Peter Lynch: PEG ratio? Is this a "stalwart", "fast grower", or "turnaround"?
-3. Philip Fisher: Does management reinvest wisely? Innovation strength?
-4. Joel Greenblatt: Magic Formula rank (earnings yield + ROIC)?
+Evaluate [TICKER.NS] through the distinct lenses of master investors:
 
-Give a consolidated score (0 to 100) and final Buy/Avoid verdict.
+1. Warren Buffett (Economic Moat & Return on Capital): Does the company possess a durable pricing power moat? Is ROCE consistently > 18% without excessive leverage? Would you hold this business if the stock market closed for 5 years?
+2. Peter Lynch (Category & Peg Sanity): Classify the business (Fast Grower, Stalwart, Cyclical, Turnaround). Does it avoid the cyclical peak trap? Is valuation reasonable relative to secular (not 1-year spike) growth?
+3. Philip Fisher (Scuttlebutt & Management Quality): Does management have integrity and transparent accounting? Is R&D and capex creating genuine customer value? Are margins expanding?
+4. Joel Greenblatt (Magic Formula): Calculate Earnings Yield (EBIT / Enterprise Value) and Return on Capital (EBIT / [Net Working Capital + Net Fixed Assets]). Does it rank in the top tier?
+
+Consolidated Score: 0 to 100. Provide explicit Buy/Avoid recommendation with key strengths and fatal weaknesses.
 ```
 
 ---
@@ -246,12 +337,21 @@ Give a consolidated score (0 to 100) and final Buy/Avoid verdict.
 *Run after each quarterly result on every multibagger holding*
 
 ```text
-Review the latest quarterly results for [TICKER.NS]:
-1. Did Revenue grow > 15% YoY? Did PAT grow > 18% YoY?
-2. Did ROCE stay above 20%? Did margins expand or contract?
-3. Any change in promoter holding or share pledging?
-4. Any management commentary on growth guidance or capex?
-5. VERDICT: Are the 5 multibagger pillars still intact? Continue holding or reassess?
+Perform an institutional quarterly earnings healthcheck on multibagger holding [TICKER.NS]:
+
+1. Operational Performance: Did Revenue and PAT meet or exceed 12% / 15% YoY hurdles?
+2. Margin & Pricing Power: Did Gross Margin contract or expand? Did EBITDA margin hold steady?
+3. Cash Conversion: Is operating cash flow tracking net income for the trailing 12 months? Any working capital bloat?
+4. Balance Sheet & Governance: Any increase in debt, CWIP accumulation, promoter pledge, or insider selling?
+5. Fundamental Kill Switch Audit: Are all 4 Tiers still completely intact?
+   - ROCE ≥ 18% intact?
+   - Sloan CFO/PAT ≥ 0.75 intact?
+   - Promoter pledge ≤ 5% intact?
+   - Gross Margin flat/expanding?
+6. PORTFOLIO ACTION:
+   - CONTINUE HOLDING (Fundamentals completely sound)
+   - DEPLOY TRANCHE 2 (35% milestone addition — if post-earnings dip or positive operational milestone reached)
+   - LIQUIDATE IMMEDIATELY (Fundamental kill switch triggered — state exact broken rule)
 ```
 
 ---
@@ -344,23 +444,24 @@ Show me exactly where I lost money due to emotional decisions.
 
 | Rule | Description | Why |
 |:---|:---|:---|
-| **1% Rule** | Max loss per trade = 1% of total capital (₹5,000) | Survives 20 consecutive losses |
+| **1% Rule** | Max loss per trade = 1% of total trading capital (₹2,500) | Survives 20 consecutive losses |
 | **5% Stop-Loss** | Every position gets a 5% stop-loss GTT on day of entry | No exceptions. No "hoping" |
 | **Stops Only Move UP** | Trailing stops are only adjusted upward, never downward | Locks in profits systematically |
 | **Max 5 Positions** | Never hold more than 5 active trades simultaneously | Prevents over-diversification |
 | **No Averaging Down** | NEVER add to a losing active trade | Averaging down = compounding mistakes |
-| **Drawdown Circuit Breaker** | If portfolio drops -15%, reduce slot size to ₹50,000 for 4 weeks | Capital preservation during bad regimes |
+| **Drawdown Circuit Breaker** | If portfolio drops -15%, reduce slot size to ₹25,000 for 4 weeks | Capital preservation during bad regimes |
 | **No Trading During News** | Skip entries on Budget Day, RBI Policy, Election Results | Gap risk destroys stop-losses |
 
 ### Multibagger Investing (Track 2) — Patience Rules
 
 | Rule | Description |
 |:---|:---|
-| **No Stop-Loss** | Multibaggers can drop 30–50% before going up 500%. TRENT fell -45% in COVID then went +900%. |
-| **Minimum 1-Year Hold** | Do not evaluate multibaggers on weekly or monthly timeframes. |
-| **Buy in Tranches** | 50% initial, 25% on 10% dip, 25% on 20% dip (if fundamentals intact). |
-| **Sell Only on Business Failure** | Not on price drops. Only when the 5 Pillars break. |
-| **Quarterly Review Only** | Check fundamentals after earnings. Not daily. |
+| **No Stop-Loss** | Multibaggers can drop 30–50% during market panics before going up 500%+. TRENT fell -45% in COVID then surged +900%. |
+| **8–10 Slot Distribution** | Capital is divided across 8 to 10 stocks (₹25,000 to ₹31,250 each) to eliminate fatal concentration risk. |
+| **Minimum 1-Year Hold** | Do not evaluate multibaggers on weekly or monthly market noise. |
+| **Buy in Tranches** | 65% initial conviction entry, 35% milestone accumulation (on a 7%–12% dip or 90-day post-earnings verification). |
+| **Sell Only on Business Failure** | Never sell on price drops. Exit ONLY when any of the 4-Tier Fundamental Kill Switches trigger. |
+| **Quarterly Review Only** | Audit fundamentals strictly after audited quarterly financial filings. Not daily. |
 
 ---
 
@@ -430,16 +531,16 @@ Go to **Scheduled** tab → Create Scheduled Run:
 
 | Milestone | Action |
 |:---|:---|
-| **Month 1–2** | Trade with full ₹5L. Learn execution rhythm. |
-| **After 3 months of consistent profit** | Add ₹2.5L → ₹7.5L (increase to 5 slots × ₹1.5L) |
-| **After 6 months with Sharpe > 1.0** | Add ₹2.5L → ₹10L (5 slots × ₹2L) |
+| **Month 1–2** | Trade with initial ₹2.5L capital (5 slots × ₹50,000). Master execution rhythm. |
+| **After 3 months of consistent profit** | Add ₹2.5L → ₹5.0L (increase to 5 slots × ₹1.0L) |
+| **After 6 months with Sharpe > 1.0** | Add ₹2.5L → ₹7.5L (5 slots × ₹1.5L) |
 | **After 12 months of audited track record** | Consider adding options (Engine 2) and crypto (Engine 3) |
 
 ### When to Scale Down
 | Trigger | Action |
 |:---|:---|
 | **3 consecutive stop-outs** | Pause new entries for 1 week. Review with Shadow Account. |
-| **Portfolio drawdown > -15%** | Cut slot size to ₹50,000 for 4 weeks. |
+| **Portfolio drawdown > -15%** | Cut slot size to ₹25,000 for 4 weeks. |
 | **Monthly loss > -5%** | Run risk_committee swarm. Identify if market regime changed. |
 
 ---
@@ -455,7 +556,7 @@ Go to **Scheduled** tab → Create Scheduled Run:
 | **PEG** | Price/Earnings to Growth ratio — P/E divided by earnings growth rate. Below 1.5 = reasonably priced |
 | **Sharpe Ratio** | Risk-adjusted return metric. Above 1.0 = good, Above 2.0 = excellent |
 | **Monte Carlo p-value** | Statistical test. Below 0.05 = your strategy's edge is real, not luck |
-| **Drawdown** | Peak-to-trough decline in portfolio value. -24% means your ₹5L temporarily dropped to ₹3.8L |
+| **Drawdown** | Peak-to-trough decline in portfolio value. -24% means your ₹2.5L temporarily dropped to ₹1.9L |
 | **CNC / Delivery** | Cash and Carry — buying shares for delivery (you own them). Not intraday. |
 | **BTST** | Buy Today Sell Tomorrow — buying at 3:15 PM and selling at 9:15 AM next morning |
 | **Theta** | Time decay in options — the amount an option loses in value every day |
@@ -508,6 +609,23 @@ Go to **Scheduled** tab → Create Scheduled Run:
 * **Daily Scan Window**: Run morning at **7:00 AM – 8:00 AM IST** (post-US market close) or late night at **1:45 AM IST**.
 * **Order Execution Window**: Place GTC (Good-Til-Cancelled) orders in IBKR anytime during the day before the 7:00 PM IST US market open.
 
+### Active US Portfolio Tracker Template (Interactive Brokers)
+
+| Slot | Stock | GICS Sector | Entry Date | Entry Price | Shares | Total Capital | Hard Stop (5%) | Trail Stop | Max Risk ($) | Status |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| 1 | VLO | Energy / Refining | 09-Sep-2026 | $148.65 | 3.364 | $500.06 | $141.22 | $141.22 | $25.00 (1.00%) | 🟢 ACTIVE |
+| 2 | SWKS | Technology / Semis | 09-Sep-2026 | $76.15 | 6.645 | $506.02 | $72.34* | $72.34 | $25.00 (1.00%) | 🟢 ACTIVE |
+| 3 | BG | Consumer / Agribusiness | 09-Sep-2026 | $98.80 | 5.124 | $506.25 | $93.86 | $93.86 | $25.31 (1.01%) | 🟢 ACTIVE |
+| 4 | — | Cash Reserve | — | — | — | $500.00 | — | — | $0.00 | 💰 CASH |
+| 5 | — | Cash Reserve | — | — | — | $487.67 | — | — | $0.00 | 💰 CASH |
+
+*\*Risk Audit Finding & Corrective Action on SWKS:* Original broker order had stop-loss at $71.61 (5.96% stop = $30.11 risk / 1.20% equity). Current market price is $77.28 (in profit). GTC Stop is tightened to **$72.34** ($76.15 × 0.95), restoring exact 1.0% maximum risk adherence ($25.00 max risk).
+
+* **Total US Trading Capital:** $2,500.00 USD (5 slots × $500.00)
+* **Total Invested Capital:** $1,512.33 USD (3 Active Positions)
+* **Total Cash Available:** $987.67 USD (2 Open Slots for Next Breakouts)
+* **Combined Portfolio Heat:** $75.31 USD (3.01% of total US equity, safely below 5.0% ceiling)
+
 ---
 
 ### Google Sheet Routing
@@ -525,14 +643,14 @@ Go to **Scheduled** tab → Create Scheduled Run:
 Run our US Positional Momentum Market Scan across the S&P 500 and Nasdaq 100 universe as of yesterday's US market close:
 
 My Current US Portfolio Holdings:
-- Slot 1: [SYMBOL] ([SHARES] shares @ $[PRICE])
-- Slot 2: [SYMBOL or CASH] ($[AMOUNT] available)
-- Slot 3: [SYMBOL or CASH] ($[AMOUNT] available)
-- Slot 4: [SYMBOL or CASH] ($[AMOUNT] available)
-- Slot 5: [SYMBOL or CASH] ($[AMOUNT] available)
+- Slot 1: VLO (3.364 shares bought @ $148.65, SL $141.22)
+- Slot 2: SWKS (6.645 shares bought @ $76.15, SL $72.34)
+- Slot 3: BG (5.124 shares bought @ $98.80, SL $93.86)
+- Slot 4: CASH ($500.00 available)
+- Slot 5: CASH ($487.67 available)
 
 Please calculate:
-1. NEW ENTRY CHECK: Did any S&P 500 / Nasdaq 100 stock close at a fresh 20-day High while trading above its rising 200-day EMA? If yes, calculate exact fractional quantity for my $[SLOT_SIZE] slot and the 5% initial stop-loss.
+1. NEW ENTRY CHECK: Did any S&P 500 / Nasdaq 100 stock close at a fresh 20-day High while trading above its rising 200-day EMA? If yes, calculate exact fractional quantity for my $500 slot and the 5% initial stop-loss.
 2. TRAILING STOP UPDATE: For my open US holdings, calculate the updated 2.5x ATR(14) trailing stop level based on peak close. Should I adjust my IBKR GTC stop or exit?
 3. SUMMARY TABLE: Format an executive trade sheet with Symbol, Action (BUY/HOLD/EXIT), Qty, Entry Limit, and GTC Stop-Loss, and push to Google Sheet "US_to_buy" tab.
 ```
