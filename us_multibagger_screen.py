@@ -302,10 +302,13 @@ def extract_us_financials_from_yfinance(symbol: str) -> dict:
             "net_debt_ebitda": net_debt_ebitda,
             "fcf_yield": fcf_yield,
             "rev_cagr_3y": rev_cagr,
-            "inst_own": inst_own
+            "inst_own": inst_own,
+            "last_price": float(info.get("currentPrice") or info.get("regularMarketPrice") or info.get("previousClose") or 100.0)
         }
     except Exception as e:
-        return AUDITED_US_DB.get(symbol)
+        res = AUDITED_US_DB.get(symbol, {}).copy()
+        res["last_price"] = 100.0
+        return res
 
 
 def run_us_four_tier_audit(meta: dict, fin: dict) -> dict:
@@ -477,6 +480,7 @@ def run_us_four_tier_audit(meta: dict, fin: dict) -> dict:
         "net_debt_ebitda": round(net_debt_ebitda, 2),
         "fcf_yield": round(fcf_yield, 2),
         "rev_cagr": round(rev_cagr, 1),
+        "last_price": round(float(fin.get("last_price", 100.0)), 2),
         "verdict": verdict,
         "notes": notes
     }
@@ -556,16 +560,20 @@ def run_us_multibagger_screener(sync_to_sheets: bool = False, min_score: float =
         today_str = datetime.now().strftime("%d-%b-%Y")
         sheet_rows = []
         for idx, r in approved_df.head(slots).iterrows():
+            px = float(r.get("last_price", 100.0))
+            if px <= 0: px = 100.0
+            t1_qty = round(tranche1_capital / px, 3)
+            dip_px = round(px * 0.90, 2)
             sheet_rows.append([
                 today_str,
                 r["symbol"],
                 f"{r['name']} ({r['sector']})",
                 "TRANCHE 1 BUY",
+                f"{t1_qty} shs",
+                f"${px:,.2f}",
                 f"${tranche1_capital:,.2f}",
-                f"ROIC: {r['roic']}%",
-                f"${slot_capital:,.2f}",
-                f"Tranche 2 Dip (35% = ${tranche2_capital:,.2f})",
-                "3x in 3–5 Years",
+                f"Dip: ${dip_px:,.2f} (35% = ${tranche2_capital:,.2f})",
+                f"3x in 3–5 Years (ROIC: {r['roic']}%)",
                 "ROIC < 14% 2qtr OR True FCF Neg 2yr OR Dilution > 2%/yr",
                 "APPROVED COMPOUNDER"
             ])

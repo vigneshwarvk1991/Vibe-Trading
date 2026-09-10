@@ -19,8 +19,8 @@ This blueprint outlines the complete setup for transitioning our **Track 1 Posit
   $$\text{Shares to Buy} = \left\lfloor \frac{₹25,000}{\text{Stock LTP}} \right\rfloor$$
 * **Risk Management per Trade**:
   * **Initial Hard Stop-Loss**: $5.0\%$ below buy price (₹1,250 max loss per slot = $0.5\%$ portfolio risk).
-  * **Trailing Stop**: Highest Close since entry minus $2.5 \times \text{ATR}(14)$ (updated every evening).
-  * **The +10% Profit Milestone Rule**: When a position reaches $+10\%$ gain, move the GTT Stop-Loss to Entry Price (Breakeven) or book $50\%$ partial profit and let the remaining $50\%$ ride.
+  * **The +12% Profit Milestone Rule**: When a position reaches $+12\%$ gain, move the GTT Stop-Loss to Entry Price (Breakeven) to eliminate risk entirely.
+  * **The +20% Windfall Rule**: When a position reaches $+20\%$ gain, tighten trailing stop to $1.5 \times \text{ATR}(14)$ to protect windfall profits.
 
 ---
 

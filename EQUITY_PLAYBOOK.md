@@ -101,8 +101,8 @@ Any Nifty 500 stock that satisfies the full institutional rulebook is eligible f
 
 | Slot | Stock | Entry Date | Entry Price | Shares | Stop-Loss | Trail Stop | Status |
 |:---|:---|:---|:---|:---|:---|:---|:---|
-| 1 | HAL.NS | 28-Aug-2026 | ₹4,861.00 | 2 | ₹4,617.95 | ₹4,642.75 | 🟢 ACTIVE |
-| 2 | DIVISLAB.NS | 03-Sep-2026 | ₹9,244.00 | 3 | ₹8,781.80 | ₹8,850.00 | 🟢 ACTIVE |
+| 1 | HAL.NS | 28-Aug-2026 | ₹4,861.00 | 2 | ₹4,617.95 | ₹4,823.90 | 🟢 ACTIVE (Trail to ₹4,823.90) |
+| 2 | DIVISLAB.NS | 03-Sep-2026 | ₹9,244.00 | 3 | ₹8,781.80 | ₹9,063.44 | 🟢 ACTIVE (Trail to ₹9,063.44) |
 | 3 | CHENNPETRO.NS | 10-Sep-2026 | ₹1,594.00 | 30 | ₹1,514.30 | ₹1,514.30 | 🟢 ACTIVE |
 | 4 | ADANIPORTS.NS | 10-Sep-2026 | ₹1,768.00 | 28 | ₹1,679.60 | ₹1,679.60 | 🟢 ACTIVE |
 | 5 | — | — | — | — | — | — | 💰 CASH (Slot 5: ₹50,000 capacity · ₹1,15,222 free cash available) |
@@ -209,18 +209,18 @@ To eliminate the fatal concentration risk of a 5-stock portfolio with zero stop-
 *Run every weekday between 4:00 PM – 8:00 PM IST*
 
 ```text
-Run our Positional Trend & Breakout Market Scan for Indian Equities as of today's close on:
-BHARTIARTL.NS, M&M.NS, SUNPHARMA.NS, ICICIBANK.NS, TRENT.NS, BEL.NS, HAL.NS, TITAN.NS.
+Execute the Dynamic Liquid Nifty 500 Positional Momentum Scanner across all 501 constituents:
+Command: python india_momentum_scanner.py --sync-sheet
 
-My Current Portfolio Holdings:
-- Slot 1: HAL.NS (2 shares bought @ ₹4,861.00, SL ₹4,617.95, Trail ₹4,642.75)
-- Slot 2: DIVISLAB.NS (3 shares bought @ ₹9,244.00, SL ₹8,781.80, Trail ₹8,850.00)
+My Current Portfolio Holdings (Managed in Zerodha Kite CNC & synced with Google Sheet 'Tradebook IN'):
+- Slot 1: HAL.NS (2 shares bought @ ₹4,861.00, SL ₹4,617.95, GTT Trail SL updated to ₹4,823.90)
+- Slot 2: DIVISLAB.NS (3 shares bought @ ₹9,244.00, SL ₹8,781.80, GTT Trail SL updated to ₹9,063.44)
 - Slot 3: CHENNPETRO.NS (30 shares bought @ ₹1,594.00, SL ₹1,514.30)
 - Slot 4: ADANIPORTS.NS (28 shares bought @ ₹1,768.00, SL ₹1,679.60)
 - Slot 5: CASH (₹50,000 slot capacity, ₹1,15,222 free cash available)
 
 Please calculate:
-1. NEW ENTRY CHECK: Did any watchlist stock close at a fresh 20-day High today while trading above their 200-day EMA? If yes, calculate the exact quantity to buy for my ₹50,000 slot and the 5% initial stop-loss.
+1. NEW ENTRY CHECK: Did any Nifty 500 stock print a confirmed 20-day High Breakout with Vol Surge >= 1.4x and RS >= 70%? If yes, calculate the exact quantity to buy for my open ₹50,000 slot and the 5% initial stop-loss.
 2. TRAILING STOP UPDATE: For my open holdings, calculate the updated 2.5x ATR(14) trailing stop level based on today's session high. Should I update my stop-loss GTT or exit?
 3. SUMMARY TABLE: Give me an executive trade execution sheet for tomorrow morning.
 ```
@@ -423,13 +423,13 @@ Show me exactly where I lost money due to emotional decisions.
 
 [ 1st Saturday ] Run Prompt 4C (Multibagger Screener)
                  → Deep-dive any new candidates using Prompt 4D + 4E + 4F
-                 → Add to multibagger portfolio if all 5 Pillars pass
+                 → Add to multibagger portfolio if all Four Tiers pass
 ```
 
 ### Quarterly (After Earnings Season — Jan, Apr, Jul, Oct)
 ```
 [ Post Results ] Run Prompt 4G (Quarterly Review) on EACH multibagger holding
-                 → Confirm 5 Pillars intact → Hold
+                 → Confirm Four Tiers intact → Hold
                  → If deteriorating → Run Investment Committee Swarm → Decide
 
 [ Post Results ] Run Prompt 4J (Shadow Account Audit) on past quarter's trades
@@ -613,18 +613,18 @@ Go to **Scheduled** tab → Create Scheduled Run:
 
 | Slot | Stock | GICS Sector | Entry Date | Entry Price | Shares | Total Capital | Hard Stop (5%) | Trail Stop | Max Risk ($) | Status |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
-| 1 | VLO | Energy / Refining | 09-Sep-2026 | $148.65 | 3.364 | $500.06 | $141.22 | $141.22 | $25.00 (1.00%) | 🟢 ACTIVE |
-| 2 | SWKS | Technology / Semis | 09-Sep-2026 | $76.15 | 6.645 | $506.02 | $72.34* | $72.34 | $25.00 (1.00%) | 🟢 ACTIVE |
-| 3 | BG | Consumer / Agribusiness | 09-Sep-2026 | $98.80 | 5.124 | $506.25 | $93.86 | $93.86 | $25.31 (1.01%) | 🟢 ACTIVE |
+| 1 | VLO | Energy / Refining | 09-Sep-2026 | $383.00 | 1.310 | $501.73 | $363.71 | $363.71 | $25.27 (1.01%) | 🟢 ACTIVE (CMP: $388.95) |
+| 2 | SWKS | Technology / Semis | 09-Sep-2026 | $76.15 | 6.633 | $505.10 | $72.34* | $72.34 | $25.27 (1.01%) | 🟢 ACTIVE (CMP: $76.54) |
+| 3 | BG | Consumer / Agribusiness | 09-Sep-2026 | $123.29 | 4.100 | $505.49 | $117.70 | $117.70 | $22.92 (0.92%) | 🟢 ACTIVE (CMP: $123.50) |
 | 4 | — | Cash Reserve | — | — | — | $500.00 | — | — | $0.00 | 💰 CASH |
-| 5 | — | Cash Reserve | — | — | — | $487.67 | — | — | $0.00 | 💰 CASH |
+| 5 | — | Cash Reserve | — | — | — | $487.68 | — | — | $0.00 | 💰 CASH |
 
-*\*Risk Audit Finding & Corrective Action on SWKS:* Original broker order had stop-loss at $71.61 (5.96% stop = $30.11 risk / 1.20% equity). Current market price is $77.28 (in profit). GTC Stop is tightened to **$72.34** ($76.15 × 0.95), restoring exact 1.0% maximum risk adherence ($25.00 max risk).
+*\*Risk Audit Finding & Corrective Action on SWKS:* In IBKR broker order, the stop-loss was originally set at $71.61 ($30.11 risk / 1.20% equity). GTC Stop must be tightened to **$72.34** ($76.15 × 0.95), restoring exact 1.0% maximum risk adherence ($25.00 max risk).
 
 * **Total US Trading Capital:** $2,500.00 USD (5 slots × $500.00)
-* **Total Invested Capital:** $1,512.33 USD (3 Active Positions)
-* **Total Cash Available:** $987.67 USD (2 Open Slots for Next Breakouts)
-* **Combined Portfolio Heat:** $75.31 USD (3.01% of total US equity, safely below 5.0% ceiling)
+* **Total Invested Capital:** $1,512.32 USD (3 Active Positions)
+* **Total Cash Available:** $987.68 USD (2 Open Slots for Next Breakouts)
+* **Combined Portfolio Heat:** $73.46 USD (2.94% of total US equity, safely below 5.0% ceiling)
 
 ---
 

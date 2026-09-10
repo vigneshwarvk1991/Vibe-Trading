@@ -1,24 +1,24 @@
 #!/usr/bin/env python3
 """
 ========================================================================================
-DYNAMIC S&P 500 & NASDAQ 100 POSITIONAL MOMENTUM SCANNER (TRACK 1 US MOMENTUM)
+DYNAMIC LIQUID NIFTY 500 POSITIONAL MOMENTUM SCANNER (TRACK 1 INDIA MOMENTUM)
 ========================================================================================
-100% Dynamic Universe: Downloads all constituents of S&P 500 and Nasdaq 100 live from
-Wikipedia tables. ZERO hardcoded stocks.
+100% Dynamic Universe: Downloads all ~501 constituents of the Nifty 500 index live from
+NSE Archives with local universe fallback. ZERO hardcoded stocks.
 
 Quantitative Momentum Breakout Rules:
   1. Macro Trend Gate: Price > 200 EMA with positive 20-day slope (slope > 0%).
   2. 20-Day High Breakout: Close >= 20-day high of previous 20 bars (excluding current bar).
   3. Relative Strength Gate: 126-day (6-month) price return in Top 30% of universe (RS >= 70.0%).
   4. Volume Surge Gate: Traded volume >= 1.40x 20-day average daily volume.
-  5. Liquidity Gate: 20-day Average Daily Volume >= 1,000,000 shares (or turnover >= $50M).
+  5. Liquidity Gates: 20-day ADV >= 300,000 shares AND 20-day Turnover >= Rs 3.0 Crore.
 
 Position Sizing & Risk Management:
-  - Capital: $2,500 USD across 5 slots = $500 per slot.
-  - Initial Hard Stop: Exactly 5.0% below entry price (placed as IBKR GTC stop).
-  - Max Risk per Trade: Exactly $25.00 USD (1.0% of portfolio equity).
+  - Capital: Rs 2,50,000 across 5 slots = Rs 50,000 per slot.
+  - Initial Hard Stop: Exactly 5.0% below entry price (placed as Zerodha GTT).
+  - Max Risk per Trade: Exactly Rs 2,500 (1.0% of portfolio equity).
   - Trailing Stop: 2.5x ATR(14) from highest peak close since entry.
-  - Google Sheet Sync: Pushes confirmed buy candidates to tab 'To Buy - US' via AppSheet Webhook.
+  - Google Sheet Sync: Pushes confirmed buy candidates to tab 'To buy' via AppSheet Webhook.
 ========================================================================================
 """
 
@@ -33,7 +33,6 @@ import warnings
 from datetime import datetime
 import pandas as pd
 import numpy as np
-import requests
 import yfinance as yf
 
 warnings.filterwarnings("ignore")
@@ -42,48 +41,56 @@ pd.set_option("display.width", 240)
 pd.set_option("display.float_format", lambda x: f"{x:.2f}")
 
 WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxDyh9lBxvQFwhTbPatmen-Aog4CUCKSC65-z8ZX0bS-IMznbMQsdHJha5Jb9PHkV4hUw/exec"
-SLOT_USD = 500.0
-MAX_RISK_USD = 25.0
+SLOT_CAPITAL = 50000.0
+MAX_RISK = 2500.0
 
 
-def fetch_us_universe():
+def fetch_nifty500_universe():
+    url = "https://archives.nseindia.com/content/indices/ind_nifty500list.csv"
     headers = {"User-Agent": "Mozilla/5.0"}
-    sector_map = {}
-    name_map = {}
+    tickers = []
+    meta_map = {}
 
-    # 1. Fetch S&P 500
-    url_sp500 = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
-    r = requests.get(url_sp500, headers=headers, timeout=12)
-    tables = pd.read_html(io.StringIO(r.text))
-    sp500_df = tables[0][["Symbol", "Security", "GICS Sector"]]
-    sp500_tickers = sp500_df["Symbol"].str.replace(".", "-", regex=False).tolist()
-    sector_map = dict(zip(sp500_df["Symbol"].str.replace(".", "-", regex=False), sp500_df["GICS Sector"]))
-    name_map = dict(zip(sp500_df["Symbol"].str.replace(".", "-", regex=False), sp500_df["Security"]))
+    try:
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            df = pd.read_csv(io.StringIO(resp.read().decode("utf-8")))
+            for _, row in df.iterrows():
+                raw_sym = str(row["Symbol"]).strip().replace("&", "_")
+                sym = f"{raw_sym}.NS"
+                tickers.append(sym)
+                meta_map[sym] = {
+                    "symbol": sym,
+                    "name": str(row.get("Company Name", raw_sym)),
+                    "industry": str(row.get("Industry", "General"))
+                }
+        print(f"  [OK] Live official Nifty 500 constituents fetched: {len(tickers)} stocks.")
+        return sorted(list(set(tickers))), meta_map
+    except Exception as e:
+        print(f"  [Notice] Live NSE fetch exception: {e}; using local universe fallback...")
 
-    # 2. Fetch Nasdaq 100
-    url_ndx = "https://en.wikipedia.org/wiki/Nasdaq-100"
-    r2 = requests.get(url_ndx, headers=headers, timeout=12)
-    tables2 = pd.read_html(io.StringIO(r2.text))
-    ndx_tickers = []
-    for t in tables2:
-        if "Ticker" in t.columns:
-            ndx_tickers = t["Ticker"].str.replace(".", "-", regex=False).tolist()
-            if "Company" in t.columns and "GICS Sector" in t.columns:
-                for _, row in t.iterrows():
-                    sym = str(row["Ticker"]).replace(".", "-")
-                    if sym not in sector_map:
-                        sector_map[sym] = row.get("GICS Sector", "Technology")
-                    if sym not in name_map:
-                        name_map[sym] = row.get("Company", sym)
-            break
+    local_path = "/Users/nemo/Documents/Vibe Trading/Vibe-Trading/multibagger_full_universe.csv"
+    if os.path.exists(local_path):
+        df_local = pd.read_csv(local_path)
+        for _, row in df_local.iterrows():
+            sym = str(row["symbol"]).strip()
+            if not sym.endswith(".NS"):
+                sym = f"{sym}.NS"
+            tickers.append(sym)
+            meta_map[sym] = {
+                "symbol": sym,
+                "name": str(row.get("name", sym)),
+                "industry": str(row.get("industry", str(row.get("sector", "General"))))
+            }
+        print(f"  [OK] Local universe fallback loaded: {len(tickers)} stocks.")
+        return sorted(list(set(tickers))), meta_map
 
-    universe = sorted(list(set(sp500_tickers + ndx_tickers)))
-    return universe, sector_map, name_map
+    raise RuntimeError("Unable to load Indian equity universe.")
 
 
-def compute_us_rs_percentiles(batch_df, universe):
+def compute_rs_percentiles(batch_df, tickers):
     returns_6m = {}
-    for sym in universe:
+    for sym in tickers:
         try:
             if sym not in batch_df.columns.levels[0]:
                 continue
@@ -102,47 +109,27 @@ def compute_us_rs_percentiles(batch_df, universe):
     return rs_percentiles.to_dict()
 
 
-def run_us_momentum_scanner(sync_to_sheets=False, top_n=10):
+def run_india_momentum_scanner(sync_to_sheets=False, top_n=10):
     print("\n" + "=" * 125)
-    print("  DYNAMIC S&P 500 & NASDAQ 100 POSITIONAL MOMENTUM SCANNER (US EQUITIES)")
-    print(f"  System Timestamp: {datetime.now():%Y-%m-%d %H:%M:%S EST} | Slot: ${SLOT_USD:,.2f} | Max Risk: ${MAX_RISK_USD:,.2f} (1%)")
+    print("  DYNAMIC LIQUID NIFTY 500 POSITIONAL MOMENTUM SCANNER (NSE INDIA)")
+    print(f"  System Timestamp: {datetime.now():%Y-%m-%d %H:%M:%S IST} | Slot: Rs {SLOT_CAPITAL:,.0f} | Max Risk: Rs {MAX_RISK:,.0f}")
     print("=" * 125 + "\n")
 
-    print("Step 1: Fetching official S&P 500 and Nasdaq 100 constituents...")
-    universe, sector_map, name_map = fetch_us_universe()
-    print(f"  [OK] Total Unique Universe: {len(universe)} stocks across S&P 500 & Nasdaq 100.")
+    print("Step 1: Fetching 100% dynamic universe constituents (Zero Hardcoded Stocks)...")
+    tickers, meta_map = fetch_nifty500_universe()
 
-    print(f"\nStep 2: Downloading 1-year daily market data for {len(universe)} stocks...")
-    batch_df = yf.download(universe, period="1y", interval="1d", group_by="ticker", threads=True, progress=False)
-    print("  [OK] Data download complete.")
+    print(f"\nStep 2: Downloading 1-year daily market data for {len(tickers)} stocks...")
+    batch_df = yf.download(tickers, period="1y", interval="1d", group_by="ticker", threads=True, progress=False)
+    print("  [OK] Batch download complete.")
 
     print("\nStep 3: Calculating 6-month cross-sectional Relative Strength (RS) percentiles across universe...")
-    rs_map = compute_us_rs_percentiles(batch_df, universe)
+    rs_map = compute_rs_percentiles(batch_df, tickers)
     print(f"  [OK] Relative Strength percentiles computed for {len(rs_map)} stocks.")
-
-    # Macro Benchmark Regime
-    try:
-        spy = yf.Ticker("SPY").history(period="1y")
-        qqq = yf.Ticker("QQQ").history(period="1y")
-
-        def get_bench_line(df, name):
-            c = df["Close"]
-            ema20 = c.ewm(span=20, adjust=False).mean().iloc[-1]
-            ema200 = c.ewm(span=200, adjust=False).mean().iloc[-1]
-            last = c.iloc[-1]
-            chg = ((last - c.iloc[-2]) / c.iloc[-2]) * 100.0
-            return f"{name}: ${last:.2f} ({chg:+.2f}%) | vs 20 EMA: {((last-ema20)/ema20)*100:+.2f}% | vs 200 EMA: {((last-ema200)/ema200)*100:+.2f}%"
-
-        print("\n=== MACRO BENCHMARK REGIME ===")
-        print("  " + get_bench_line(spy, "S&P 500 (SPY)"))
-        print("  " + get_bench_line(qqq, "Nasdaq 100 (QQQ)"))
-    except Exception:
-        pass
 
     results = []
     print("\nStep 4: Scanning for 20-day high breakouts, volume surge (>=1.4x), and RS (>=70%)...")
 
-    for sym in universe:
+    for sym in tickers:
         try:
             if sym not in batch_df.columns.levels[0]:
                 continue
@@ -158,27 +145,27 @@ def run_us_momentum_scanner(sync_to_sheets=False, top_n=10):
             curr_c = float(close.iloc[-1])
             curr_v = float(vol.iloc[-1])
 
-            # 1. 200 EMA & 20-day slope
+            # 200 EMA & 20-day slope
             ema200 = close.ewm(span=200, adjust=False).mean()
             slope_200 = float(((ema200.iloc[-1] - ema200.iloc[-21]) / ema200.iloc[-21]) * 100.0)
             above_200 = curr_c > float(ema200.iloc[-1])
             pos_slope = slope_200 > 0.0
 
-            # 2. 20-Day High of PREVIOUS 20 bars (excluding current bar)
+            # 20-Day High of PREVIOUS 20 bars (excluding current bar)
             high_20d = float(high.iloc[-21:-1].max())
 
-            # 3. Volume Surge Ratio
+            # Volume Surge Ratio
             avg_vol_20 = float(vol.iloc[-21:-1].mean())
             vol_ratio = curr_v / avg_vol_20 if avg_vol_20 > 0 else 0.0
 
-            # 4. Liquidity Gate: ADV >= 1,000,000 shares OR Dollar Turnover >= $50M
-            turnover_m = (avg_vol_20 * curr_c) / 1e6
-            liq_pass = (avg_vol_20 >= 1000000) or (turnover_m >= 50.0)
+            # Liquidity Gate: 20-day ADV >= 300k shares AND Turnover >= Rs 3.0 Cr
+            turnover_cr = (avg_vol_20 * curr_c) / 1e7
+            liq_pass = (avg_vol_20 >= 300000) and (turnover_cr >= 3.0)
 
-            # 5. Relative Strength Percentile
+            # Relative Strength Percentile
             rs_pct = float(rs_map.get(sym, 50.0))
 
-            # 6. ATR(14)
+            # ATR(14)
             tr1 = high - low
             tr2 = np.abs(high - close.shift(1))
             tr3 = np.abs(low - close.shift(1))
@@ -187,7 +174,7 @@ def run_us_momentum_scanner(sync_to_sheets=False, top_n=10):
 
             dist_20d = float(((curr_c - high_20d) / high_20d) * 100.0)
 
-            # STRICT BREAKOUT DEFINITION (All 5 Gates Must Pass)
+            # Strict Breakout
             is_breakout = (
                 (curr_c >= high_20d) and
                 above_200 and
@@ -197,7 +184,7 @@ def run_us_momentum_scanner(sync_to_sheets=False, top_n=10):
                 liq_pass
             )
 
-            # Near-Breakout definition
+            # Near Breakout
             is_near = (
                 (-2.0 <= dist_20d <= 0.5) and
                 above_200 and
@@ -206,29 +193,32 @@ def run_us_momentum_scanner(sync_to_sheets=False, top_n=10):
                 liq_pass
             )
 
-            shares = round(SLOT_USD / curr_c, 3)
+            shares = max(1, int(SLOT_CAPITAL / curr_c))
+            capital = round(shares * curr_c, 2)
             hard_sl = round(curr_c * 0.95, 2)
             atr_trail = round(curr_c - (2.5 * atr14), 2)
             risk = round((curr_c - hard_sl) * shares, 2)
 
+            meta = meta_map.get(sym, {})
             results.append({
                 "Symbol": sym,
-                "Name": name_map.get(sym, sym)[:22],
-                "Sector": sector_map.get(sym, "Unknown")[:18],
+                "Name": meta.get("name", sym)[:24],
+                "Industry": meta.get("industry", "General")[:18],
                 "Close": round(curr_c, 2),
                 "20d_High": round(high_20d, 2),
                 "Dist_%": round(dist_20d, 2),
                 "Vol_Ratio": round(vol_ratio, 2),
                 "RS_Pct": round(rs_pct, 1),
                 "Slope_200_%": round(slope_200, 2),
-                "Turnover_$M": round(turnover_m, 1),
+                "Turnover_Cr": round(turnover_cr, 1),
                 "ATR14": round(atr14, 2),
                 "Breakout": bool(is_breakout),
                 "Near_Breakout": bool(is_near),
                 "Shares": shares,
+                "Capital": capital,
                 "Hard_SL_5%": hard_sl,
                 "Trail_SL": atr_trail,
-                "Risk_$": risk
+                "Risk_INR": risk
             })
         except Exception:
             continue
@@ -246,44 +236,44 @@ def run_us_momentum_scanner(sync_to_sheets=False, top_n=10):
 
     print("=" * 125)
     print(f"  CONFIRMED 20-DAY HIGH MOMENTUM BREAKOUTS ({len(breakouts_df)} FOUND)")
-    print("  Filters: Close >= 20d High | Price > 200 EMA | Slope > 0 | Vol Ratio >= 1.40x | RS >= 70% | ADV >= 1M / $50M")
+    print("  Filters: Close >= 20d High | Price > 200 EMA | Slope > 0 | Vol Ratio >= 1.40x | RS >= 70% | Turnover >= Rs 3Cr")
     print("=" * 125)
-    show_cols = ["Symbol", "Name", "Sector", "Close", "20d_High", "Vol_Ratio", "RS_Pct", "Shares", "Hard_SL_5%", "Trail_SL", "Risk_$"]
+    show_cols = ["Symbol", "Name", "Industry", "Close", "20d_High", "Vol_Ratio", "RS_Pct", "Shares", "Capital", "Hard_SL_5%", "Trail_SL", "Risk_INR"]
     if not breakouts_df.empty:
         print(breakouts_df[show_cols].to_string())
     else:
         print("  Zero confirmed breakouts today meeting all strict institutional gates. Capital 100% protected in cash.")
 
     print("\n" + "=" * 125)
-    print(f"  TOP WATCHLIST: NEAR-BREAKOUT CANDIDATES (WITHIN 2.0% OF 20-DAY HIGH, RS >= 65%)")
+    print("  TOP WATCHLIST: NEAR-BREAKOUT CANDIDATES (WITHIN 2.0% OF 20-DAY HIGH, RS >= 65%)")
     print("=" * 125)
-    watch_cols = ["Symbol", "Name", "Sector", "Close", "20d_High", "Dist_%", "Vol_Ratio", "RS_Pct", "Turnover_$M", "Hard_SL_5%"]
+    watch_cols = ["Symbol", "Name", "Industry", "Close", "20d_High", "Dist_%", "Vol_Ratio", "RS_Pct", "Turnover_Cr", "Hard_SL_5%"]
     if not near_df.empty:
         print(near_df[watch_cols].to_string())
 
-    csv_path = "/Users/nemo/Documents/Vibe Trading/Vibe-Trading/us_momentum_results.csv"
+    csv_path = "/Users/nemo/Documents/Vibe Trading/Vibe-Trading/india_momentum_results.csv"
     df_res.to_csv(csv_path, index=False)
     print(f"\n[OK] Full scan results saved to: {csv_path}")
 
     if sync_to_sheets and not breakouts_df.empty:
-        print("\n[OK] Pushing confirmed buy orders to Google Sheet 'To Buy - US' tab via Webhook...")
+        print("\n[OK] Pushing confirmed buy orders to Google Sheet 'To buy' tab via Webhook...")
         today_str = datetime.now().strftime("%d-%b-%Y")
         sheet_rows = []
         for _, r in breakouts_df.head(top_n).iterrows():
             sheet_rows.append([
                 today_str,
                 r["Symbol"],
-                r["Sector"],
+                r["Industry"],
                 "BUY",
-                float(r["Shares"]),
+                int(r["Shares"]),
                 float(r["Close"]),
-                500.0,
+                float(r["Capital"]),
                 float(r["Hard_SL_5%"]),
                 float(r["Trail_SL"]),
-                float(r["Risk_$"]),
+                float(r["Risk_INR"]),
                 "CONFIRMED BREAKOUT"
             ])
-        payload = {"tab": "To Buy - US", "rows": sheet_rows}
+        payload = {"tab": "To buy", "rows": sheet_rows}
         try:
             req = urllib.request.Request(
                 WEBHOOK_URL,
@@ -299,9 +289,9 @@ def run_us_momentum_scanner(sync_to_sheets=False, top_n=10):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Dynamic S&P 500 & Nasdaq 100 Momentum Scanner")
-    parser.add_argument("--sync-sheet", action="store_true", help="Push confirmed breakouts to Google Sheet 'To Buy - US' tab")
+    parser = argparse.ArgumentParser(description="Dynamic Liquid Nifty 500 Momentum Scanner")
+    parser.add_argument("--sync-sheet", action="store_true", help="Push confirmed breakouts to Google Sheet 'To buy' tab")
     parser.add_argument("--top", type=int, default=10, help="Max candidates to sync")
     args = parser.parse_args()
 
-    run_us_momentum_scanner(sync_to_sheets=args.sync_sheet, top_n=args.top)
+    run_india_momentum_scanner(sync_to_sheets=args.sync_sheet, top_n=args.top)
