@@ -26,18 +26,28 @@
 ## 1. CAPITAL STRUCTURE
 
 ```
-  ACTIVE TRADING CAPITAL              INVESTING CAPITAL
-  ₹5,00,000                           Separate (Unlimited)
-  ─────────────────────               ─────────────────────
-  • 100% allocated to                 • Multibagger portfolio
-    positional momentum               • Hold 1–3+ years
-  • 5 Slots × ₹1,00,000              • 5+ stocks × flexible sizing
-  • Hold 30–90 days                   • No stop-loss
-  • Strict stop-loss & trail          • Sell only on business
-  • Target: 25–40% CAGR                deterioration
+========================================================================================================
+                                     TOTAL CAPITAL ARCHITECTURE
+========================================================================================================
+
+       INDIA PORTFOLIO (₹5,00,000 Total)                 US PORTFOLIO (~$5,500 / ₹5,00,000 Total)
+  ───────────────────────────────────────────       ──────────────────────────────────────────────────
+  TRACK 1: Active Momentum (₹2,50,000)              TRACK 1: Active Momentum ($2,500 USD)
+    • 5 Slots × ₹50,000 per position (20%)            • 5 Slots × $500 USD per position (20%)
+    • Max risk per trade: ₹2,500 (1% of capital)      • Max risk per trade: $25 USD (1% of capital)
+    • 5% initial stop + 2.5× ATR trailing stop        • 5% initial stop + 2.5× ATR trailing stop
+    • Holding horizon: 30–90 days                     • Holding horizon: 25–40 days
+    • Target: 25–40% CAGR                             • Target: 25–35% CAGR
+
+  TRACK 2: Multibagger Compounders (₹2,50,000)      TRACK 2: US Moat Compounders (₹2,50,000 / ~$2,900)
+    • 5–6 Core Compounders × ₹40,000 – ₹50,000        • 5 World-Class Monopolies × $500 – $600 USD
+    • Tranches: 50% initial, 25% dip 1, 25% dip 2    • Tranches: 50% initial, 25% dip 1, 25% dip 2
+    • Holding horizon: 1–3+ years (No stop-loss)      • Holding horizon: 1–3+ years (No stop-loss)
+    • Sell ONLY on fundamental business breakdown     • Sell ONLY on structural moat deterioration
+========================================================================================================
 ```
 
-> **Rule:** Trading capital and investing capital are NEVER mixed. Trading profits stay in trading. Investing capital is separate long-term wealth building.
+> **Iron Rule:** Trading capital and investing capital are NEVER mixed. Trading profits stay in trading. Investing capital compounds separately for multi-year wealth building.
 
 ---
 
@@ -53,32 +63,39 @@
 | **Max Drawdown** | -24.08% |
 
 ### Entry Rules (All Must Be True)
-1. ✅ Stock price is **above the 200-day EMA** (confirms macro uptrend).
-2. ✅ The **200-day EMA is sloping upward** (not flat or declining).
-3. ✅ Daily Close prints a **new 20-day High** (breakout trigger).
+1. ✅ **Macro Trend Filter:** Stock price is **above the 200-day EMA** with the **200-day EMA sloping upward**.
+2. ✅ **Price Breakout Trigger:** Daily Close prints a fresh **20-day High Breakout** (Close $\ge$ max Close of prior 20 sessions).
+3. ✅ **Relative Strength (RS) Gate:** 6-month (126-day) price performance ranks in the **top 30% of the universe (RS Percentile $\ge$ 70.0%)**.
+4. ✅ **Institutional Volume Surge:** Breakout day volume is **$\ge$ 1.40× the 20-day average volume** (confirms big-money accumulation).
+5. ✅ **Macro Regime Defense (Dual Momentum):** Broad benchmark (**Nifty 50**) is trading above its 200-day EMA, and India VIX is $\le$ 22. If breached, pause all new entries.
 
-### Exit Rules (Any One Triggers Exit)
-1. 🛑 **Initial Stop-Loss:** 5.0% below entry price (set as GTT immediately on entry).
-2. 📈 **Trailing Stop (ATR):** Close drops below **2.5× ATR(14)** from swing peak high.
-3. 📉 **Trailing Stop (Donchian):** Close drops below the **20-day Low**.
-4. ⏰ Whichever trailing stop is hit first triggers the exit.
+### Exit & Trailing Rules (Any One Triggers Exit)
+1. 🛑 **Initial Stop-Loss:** **5.0% below buy price** (placed as Zerodha GTT immediately upon entry).
+2. 📈 **Trailing Stop (ATR):** Daily Close drops below **2.5× ATR(14)** from the highest closing peak.
+3. 🔒 **Breakeven Profit Lock (+12% Rule):** When position hits **+12% unrealized gain**, immediately adjust GTT stop to **Breakeven (Entry Price)**.
+4. 🚀 **Windfall Protection (+20% Rule):** When position hits **+20% unrealized gain**, tighten trailing stop from 2.5× ATR to **1.5× ATR(14)**.
+5. 📉 **Trend Invalidation:** Close drops below the 200-day EMA.
+6. ⏰ Whichever exit trigger is hit first executes the exit immediately.
 
 ### Position Sizing
 | Parameter | Calculation |
 |:---|:---|
-| **Capital per Slot** | ₹1,00,000 (20% of ₹5L per slot) |
+| **Total Track 1 Capital** | ₹2,50,000 (Allocated from 10-Sep-2026) |
+| **Capital per Slot** | ₹50,000 (20% of ₹2.5L per slot) |
 | **Max Concurrent Positions** | 5 stocks |
-| **Shares to Buy** | ₹1,00,000 ÷ Stock Price (round down) |
-| **Max Risk per Trade** | ₹5,000 (1% of total capital) |
+| **Shares to Buy** | ₹50,000 ÷ Stock Price (round down) |
+| **Max Risk per Trade** | ₹2,500 (1.0% of total ₹2.5L capital at 5% stop) |
 
-### Universe Selection: 100% Dynamic Nifty 100 Index Protocol
-**Zero Hardcoded Stocks.** The system scans the entire **NIFTY 100 Index universe (NSE India)** dynamically every trading session. 
+### Universe Selection: 100% Dynamic Liquid Nifty 500 Protocol
+**Zero Hardcoded Stocks.** The system dynamically scans the entire **NIFTY 500 Index universe (NSE India)** every trading session.
 
-Any Nifty 100 stock that meets the 3-Step Mathematical Rule (Price > 200 EMA + Positive 200 EMA Slope + Fresh 20-Day High Breakout) is eligible for entry regardless of sector.
+Any Nifty 500 stock that satisfies the full institutional rulebook is eligible for entry regardless of sector.
 
-* **Universe Scope:** Top 100 large-cap & high-liquidity stocks on the National Stock Exchange (NSE).
-* **Liquidity Gate:** Average Daily Volume > 500,000 shares / Turnover > ₹50 Cr daily (eliminates illiquidity & circuit traps).
-* **Sector Neutrality:** Maximum 2 positions from the same sector to maintain portfolio diversification across your 5 slots.
+* **Universe Scope:** 501 large, mid, and liquid small-cap constituents of the Nifty 500 index.
+* **Liquidity Gates (Mandatory):**
+  * **Turnover Gate:** 20-day Average Daily Turnover $\ge$ **₹5.0 Crore** (eliminates illiquid traps and pump-and-dump microcaps).
+  * **Volume Gate:** 20-day Average Daily Volume $\ge$ **500,000 shares** (guarantees instantaneous order execution with zero slippage).
+* **Sector Diversification:** Maximum 2 positions from the same industry sector to eliminate concentration risk across your 5 slots.
 
 ### Portfolio Tracker Template
 
@@ -468,18 +485,20 @@ Go to **Scheduled** tab → Create Scheduled Run:
 ### Position Sizing & Parameters
 | Parameter | Calculation / Value |
 |:---|:---|
-| **Total US Trading Capital** | Configurable (e.g., $2,500 – $5,000 USD) |
-| **Number of Slots** | 5 to 10 Slots (e.g., $500 per slot) |
-| **Fractional Shares Advantage** | Supported! $\text{Shares} = \frac{\text{Slot Capital}}{\text{Stock Price}}$ (up to 3 decimal places) |
-| **Initial Stop-Loss** | **5.0% below buy price** (GTC Stop order in IBKR) |
+| **Total US Trading Capital** | **$2,500 USD** (Allocated from 10-Sep-2026) |
+| **Number of Slots** | **5 Slots × $500.00 USD per slot (20%)** |
+| **Fractional Shares Advantage** | Supported! $\text{Shares} = \frac{\$500.00}{\text{Stock Price}}$ (filled to 3 decimal places) |
+| **Initial Stop-Loss** | **5.0% below buy price** (GTC Stop order placed in IBKR upon entry) |
 | **Trailing Stop (ATR)** | Daily Close drops below **2.5× ATR(14)** from peak close |
-| **+10% Profit Milestone Rule** | At +10% gain, move GTC Stop to Breakeven (Entry Price) or take 50% partial profit |
+| **Max Risk per Trade** | **$25.00 USD** (1.0% of total $2,500 capital at 5% stop) |
+| **+12% Profit Lock Rule** | At +12% gain, move GTC Stop to Breakeven (Entry Price) |
+| **+20% Windfall Protection**| At +20% gain, tighten trailing stop to **1.5× ATR(14)** |
 
 ---
 
 ### Universe Selection: Dynamic S&P 500 & Nasdaq 100 Protocol
-1. **Universe Scope**: Top 100 liquid constituents of the S&P 500 and Nasdaq 100.
-2. **Liquidity Gate**: Average Daily Volume > 1,000,000 shares (zero liquidity/slippage drag).
+1. **Universe Scope**: 503 liquid constituents of the S&P 500 and Nasdaq 100.
+2. **Liquidity Gate**: Average Daily Volume > 1,000,000 shares (zero slippage drag).
 3. **Sector Diversification**: Maximum 2 concurrent positions from the same GICS sector.
 
 ---
@@ -492,8 +511,8 @@ Go to **Scheduled** tab → Create Scheduled Run:
 ---
 
 ### Google Sheet Routing
-* **`US_Tradebook`**: Active open US stock positions (Date, Symbol, Qty, Entry Price in USD, Total USD, Stop Loss, Status).
-* **`US_to_buy`**: Action orders generated by the morning scan (Action, Symbol, Qty, Limit Buy, Initial Stop Loss).
+* **`Tradebook US`**: Active open US stock positions (Date, Symbol, Sector, Action, Quantity, Entry Price, Total Capital, Stop Loss).
+* **`To Buy - US`**: Action orders generated by the morning scan (Date, Symbol, Sector, Action, Quantity, Entry Price, Total Capital, Stop Loss, Trail Stop, Max Risk, Status).
 
 ---
 
@@ -533,10 +552,46 @@ Run a momentum leadership scan across the S&P 500 and Nasdaq 100 universe as of 
 
 ---
 
-*(Note: US Multibagger Fundamental Investing [Track 2] is reserved for future expansion).*
+## 12. US MULTIBAGGER INVESTING FRAMEWORK (Track 2 US)
+
+### Capital Allocation & Structure
+| Parameter | Value / Protocol |
+|:---|:---|
+| **Total Track 2 US Capital** | **₹2,50,000** (~**$2,850 – $3,000 USD** at current FX) |
+| **Number of Core Positions** | **5 World-Class Moat Compounders** |
+| **Allocation per Company** | **~$500 – $600 USD** per stock |
+| **Broker Engine** | Interactive Brokers (IBKR Cash Delivery — Zero Margin, No Options) |
+| **Google Sheet Routing** | **`Multibagger - US`** |
+| **Holding Horizon** | **1–3+ Years** (Long-term business compounders, Zero stop-loss) |
 
 ---
 
-*Playbook v1.1 — Updated September 2026 (Added Section 11: US Equities Momentum)*  
-*Review and update this playbook monthly or after any significant strategy change.*
+### The 5 Pillars of US Compounders (ALL Must Pass)
+1. 💎 **ROIC / ROCE > 18%:** Extraordinary capital efficiency and high reinvestment runway.
+2. 🌊 **Secular Economic Moat:** Network effects, high switching costs, or mission-critical monopoly (e.g. MSFT, V, NVDA, CPRT, FICO, HEICO).
+3. 💵 **Cash Generation:** Free Cash Flow (FCF) conversion > 85% of Net Income; FCF margins > 20%.
+4. 🛡️ **Pristine Balance Sheet:** Net Cash or Net Debt / EBITDA < 2.0x (bulletproof during Fed rate hikes and recessions).
+5. ⚖️ **Valuation Guardrail:** PEG Ratio < 2.0 or FCF Yield > 3.0% (avoid hyper-euphoric bubble multiples).
+
+---
+
+### Tranche Accumulation System (No Stop-Loss)
+*Never buy 100% of a US multibagger on day one.*
+* **Tranche 1 (50% — ~$250–$300):** Buy upon passing the 5 Pillars and Swarm approval.
+* **Tranche 2 (25% — ~$125–$150):** Buy if the stock experiences a **-10% market pullback** (with business fundamentals intact).
+* **Tranche 3 (25% — ~$125–$150):** Buy if the stock experiences a **-20% broader market correction**.
+
+---
+
+### Multibagger US Sell Rules (Sell ONLY If)
+* ❌ ROIC drops below 15% for two consecutive fiscal quarters.
+* ❌ Structural technological obsolescence threatens the core business moat.
+* ❌ Reckless empire-building M&A dilutes return on capital.
+* ❌ Forensic accounting or cash flow divergence red flags.
+* *(Never sell due to macro headlines, election news, or general market drawdowns).*
+
+---
+
+*Playbook v2.0 — Updated September 2026 (Institutional 4-Quadrant Architecture: India & US)*  
+*Review and update this playbook monthly or after any significant capital/strategy changes.*
 
