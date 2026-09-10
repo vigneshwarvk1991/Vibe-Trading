@@ -1,0 +1,103 @@
+{
+  "execution_time": "2026-09-10T19:40:13.896509",
+  "india_momentum": {
+    "6m": {
+      "total_trades": 37,
+      "win_count": 10,
+      "loss_count": 27,
+      "win_rate_pct": 27.0,
+      "avg_win_pct": 10.73,
+      "avg_loss_pct": 4.42,
+      "payoff_ratio": 2.43,
+      "max_single_loss_pct": -10.31,
+      "max_single_win_pct": 28.7,
+      "simulated_portfolio_return_pct": -2.43,
+      "avg_bars_held": 10.8
+    },
+    "12m": {
+      "total_trades": 77,
+      "win_count": 20,
+      "loss_count": 57,
+      "win_rate_pct": 26.0,
+      "avg_win_pct": 6.29,
+      "avg_loss_pct": 4.53,
+      "payoff_ratio": 1.39,
+      "max_single_loss_pct": -11.64,
+      "max_single_win_pct": 28.7,
+      "simulated_portfolio_return_pct": -26.48,
+      "avg_bars_held": 10.8
+    }
+  },
+  "us_momentum": {
+    "6m": {
+      "total_trades": 28,
+      "win_count": 6,
+      "loss_count": 22,
+      "win_rate_pct": 21.4,
+      "avg_win_pct": 8.31,
+      "avg_loss_pct": 4.92,
+      "payoff_ratio": 1.69,
+      "max_single_loss_pct": -7.49,
+      "max_single_win_pct": 16.15,
+      "simulated_portfolio_return_pct": -11.68,
+      "avg_bars_held": 6.7
+    },
+    "12m": {
+      "total_trades": 56,
+      "win_count": 14,
+      "loss_count": 42,
+      "win_rate_pct": 25.0,
+      "avg_win_pct": 10.47,
+      "avg_loss_pct": 4.97,
+      "payoff_ratio": 2.11,
+      "max_single_loss_pct": -7.52,
+      "max_single_win_pct": 22.01,
+      "simulated_portfolio_return_pct": -12.43,
+      "avg_bars_held": 9.0
+    }
+  },
+  "india_multibaggers": {
+    "6m": {
+      "basket_return_pct": 15.79,
+      "benchmark_return_pct": 0.1,
+      "alpha_vs_benchmark_pct": 15.69,
+      "win_rate_pct": 100.0,
+      "best_performer": "RATNAMANI.NS",
+      "best_return_pct": 25.73,
+      "worst_performer": "ELECON.NS",
+      "worst_return_pct": 0.12
+    },
+    "12m": {
+      "basket_return_pct": -2.95,
+      "benchmark_return_pct": -6.17,
+      "alpha_vs_benchmark_pct": 3.23,
+      "win_rate_pct": 50.0,
+      "best_performer": "ELGIEQUIP.NS",
+      "best_return_pct": 31.06,
+      "worst_performer": "MAPMYINDIA.NS",
+      "worst_return_pct": -41.77
+    }
+  },
+  "us_multibaggers": {
+    "6m": {
+      "basket_return_pct": 5.92,
+      "benchmark_return_pct": 14.56,
+      "alpha_vs_benchmark_pct": -8.64,
+      "win_rate_pct": 62.5,
+      "best_performer": "PAYX",
+      "best_return_pct": 30.02,
+      "worst_performer": "LULU",
+      "worst_return_pct": -35.54
+    },
+    "12m": {
+      "basket_return_pct": -9.35,
+      "benchmark_return_pct": 18.19,
+      "alpha_vs_benchmark_pct": -27.54,
+      "win_rate_pct": 37.5,
+      "best_performer": "NVDA",
+      "best_return_pct": 24.84,
+      "worst_performer": "LULU",
+      "worst_return_pct": -41.44
+    }
+  }
+}
