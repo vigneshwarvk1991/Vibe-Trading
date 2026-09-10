@@ -40,9 +40,9 @@
     • Target: 25–40% CAGR                             • Target: 25–35% CAGR
 
   TRACK 2: Institutional Quality Compounders (₹2,50,000)  TRACK 2: US Moat Compounders (₹2,50,000 / ~$2,900)
-    • 8–10 Core Positions × ₹25,000 – ₹31,250 (10%–12.5%)   • 5 World-Class Monopolies × $500 – $600 USD
-    • Tranches: 65% initial conviction, 35% milestone dip   • Tranches: 50% initial, 25% dip 1, 25% dip 2
-    • Holding horizon: 1–3+ years (Zero stop-loss)          • Holding horizon: 1–3+ years (No stop-loss)
+    • 8–10 Core Positions × ₹25,000 – ₹31,250 (10%–12.5%)   • 6–8 World-Class Monopolies × $360 – $480 USD
+    • Tranches: 65% initial conviction, 35% milestone dip   • Tranches: 65% initial conviction, 35% milestone
+    • Holding horizon: 1–3+ years (Zero stop-loss)          • Holding horizon: 1–3+ years (Zero stop-loss)
     • Sell ONLY on forensic / moat breakdown                • Sell ONLY on structural moat deterioration
 ========================================================================================================
 ```
@@ -676,36 +676,68 @@ Run a momentum leadership scan across the S&P 500 and Nasdaq 100 universe as of 
 | Parameter | Value / Protocol |
 |:---|:---|
 | **Total Track 2 US Capital** | **₹2,50,000** (~**$2,850 – $3,000 USD** at current FX) |
-| **Number of Core Positions** | **5 World-Class Moat Compounders** |
-| **Allocation per Company** | **~$500 – $600 USD** per stock |
+| **Number of Core Positions** | **6 to 8 World-Class Moat Compounders** |
+| **Allocation per Company** | **~$360 – $480 USD** per stock (12.5%–16.6% max weight) |
 | **Broker Engine** | Interactive Brokers (IBKR Cash Delivery — Zero Margin, No Options) |
+| **Fractional Sizing** | Exact fractional shares to 4 decimal places via IBKR |
 | **Google Sheet Routing** | **`Multibagger - US`** |
 | **Holding Horizon** | **1–3+ Years** (Long-term business compounders, Zero stop-loss) |
 
 ---
 
-### The 5 Pillars of US Compounders (ALL Must Pass)
-1. 💎 **ROIC / ROCE > 18%:** Extraordinary capital efficiency and high reinvestment runway.
-2. 🌊 **Secular Economic Moat:** Network effects, high switching costs, or mission-critical monopoly (e.g. MSFT, V, NVDA, CPRT, FICO, HEICO).
-3. 💵 **Cash Generation:** Free Cash Flow (FCF) conversion > 85% of Net Income; FCF margins > 20%.
-4. 🛡️ **Pristine Balance Sheet:** Net Cash or Net Debt / EBITDA < 2.0x (bulletproof during Fed rate hikes and recessions).
-5. ⚖️ **Valuation Guardrail:** PEG Ratio < 2.0 or FCF Yield > 3.0% (avoid hyper-euphoric bubble multiples).
+### The Four-Tier US Institutional Compounder Framework (ALL Must Pass)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│              TIER 1: ELITE US MOAT UNIVERSE (Pre-Screening)                     │
+│  • Universe: S&P 500 + S&P MidCap 400 + Nasdaq 100 constituents                 │
+│  • Market Cap Floor: Market Capitalization ≥ $5.0 Billion USD                   │
+│  • Liquidity Floor: 20-Day Average Daily Volume ≥ 1,000,000 shares              │
+└──────────────────────────────────────┬──────────────────────────────────────────┘
+                                       │ (Passes Universe Gate)
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│       TIER 2: TRUE OWNER EARNINGS & ANTI-DILUTION GATES (Zero Tolerance)        │
+│  • SBC-Adjusted True FCF: True FCF = CFO - Capex - Stock-Based Comp > 0        │
+│  • True FCF Conversion: True FCF ÷ Net Income ≥ 70.0%                           │
+│  • Share Cannibal Gate: 3-Year Diluted Shares CAGR ≤ 0.0% (Flat or Shrinking)   │
+│  • Institutional Sponsorship: 60%–85% held by Tier-1 institutions               │
+└──────────────────────────────────────┬──────────────────────────────────────────┘
+                                       │ (Passes True FCF & Anti-Dilution)
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│         TIER 3: RETURN ON INVESTED CAPITAL (ROIC) & MOAT RESILIENCE             │
+│  • ROIC on Invested Capital: ROIC = NOPAT ÷ Invested Capital ≥ 15% (5 Years)    │
+│    (Invested Capital = Net Working Capital + Net PP&E; NOT Book Equity)         │
+│  • Gross Margin Moat: Gross Margin ≥ 40.0% (confirms pricing power & switching) │
+│  • Debt Fortress: Net Debt ÷ EBITDA ≤ 2.0x  ·  Interest Coverage ≥ 5.0x        │
+│    (Handles negative book equity from share repurchases like AutoZone/Home Depot)│
+└──────────────────────────────────────┬──────────────────────────────────────────┘
+                                       │ (Passes Moat & Balance Sheet)
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│             TIER 4: VALUATION GUARDRAILS (Replacing Naive PEG)                  │
+│  • True FCF Yield: True FCF ÷ Enterprise Value ≥ 2.5%                           │
+│  • Forward EV/EBITDA: Below its 5-year historical median                        │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-### Tranche Accumulation System (No Stop-Loss)
-*Never buy 100% of a US multibagger on day one.*
-* **Tranche 1 (50% — ~$250–$300):** Buy upon passing the 5 Pillars and Swarm approval.
-* **Tranche 2 (25% — ~$125–$150):** Buy if the stock experiences a **-10% market pullback** (with business fundamentals intact).
-* **Tranche 3 (25% — ~$125–$150):** Buy if the stock experiences a **-20% broader market correction**.
+### Two-Tranche Milestone Deployment Protocol (Anti-Cash Drag)
+*Never buy 100% upfront; never wait indefinitely for market crashes.*
+* **Tranche 1 (65% — ~$235–$310 USD):** Deployed immediately upon a stock passing all 4 Tiers and Investment Committee review.
+* **Tranche 2 (35% — ~$125–$170 USD):** Deployed under EITHER path:
+  * **Path A (Market Dip):** A **7%–12% broader market pullback** with company fundamentals intact.
+  * **Path B (Earnings Verification):** If no dip occurs within 90 days, deploy Tranche 2 immediately following the company's next quarterly earnings report that verifies Revenue CAGR ≥ 10% and ROIC is holding.
 
 ---
 
 ### Multibagger US Sell Rules (Sell ONLY If)
-* ❌ ROIC drops below 15% for two consecutive fiscal quarters.
+* ❌ ROIC drops below 14% for two consecutive fiscal quarters.
+* ❌ True FCF (after SBC) turns negative for two consecutive years.
 * ❌ Structural technological obsolescence threatens the core business moat.
-* ❌ Reckless empire-building M&A dilutes return on capital.
-* ❌ Forensic accounting or cash flow divergence red flags.
+* ❌ Aggressive stock-based compensation dilutes share count (>2% per year).
 * *(Never sell due to macro headlines, election news, or general market drawdowns).*
 
 ---
