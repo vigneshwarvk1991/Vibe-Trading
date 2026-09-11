@@ -478,23 +478,48 @@ def get_account_snapshot(config: ZerodhaConfig | None = None) -> dict[str, Any]:
 
 
 def get_positions(config: ZerodhaConfig | None = None) -> dict[str, Any]:
-    """Read open (net) positions from Kite."""
+    """Read open (net) positions and settled Demat holdings from Kite."""
     cfg = config or load_config()
     try:
         kite = _login(cfg)
         positions = kite.positions()
+        try:
+            holdings = kite.holdings()
+        except Exception:
+            holdings = []
     except ZerodhaConfigError as exc:
         return {"status": "error", "error": str(exc)}
     except Exception as exc:  # noqa: BLE001 — one bad read never aborts
         return {"status": "error", "error": str(exc)}
-    raw = positions.get("net", []) if isinstance(positions, dict) else positions
     rows = []
+    # 1. Settled Demat equity holdings
+    for item in _as_list(holdings):
+        qty = int(_num(item.get("quantity", 0))) + int(_num(item.get("t1_quantity", 0)))
+        if qty == 0:
+            continue
+        rows.append({
+            "symbol": item.get("tradingsymbol", ""),
+            "exchange": item.get("exchange", "NSE"),
+            "product_type": "CNC",
+            "quantity": qty,
+            "average_cost": _num(item.get("average_price", 0)),
+            "ltp": _num(item.get("last_price", 0)),
+            "unrealized_pnl": _num(item.get("pnl", 0)),
+            "realized_pnl": 0.0,
+            "overnight_quantity": int(_num(item.get("quantity", 0))),
+            "multiplier": 1.0,
+        })
+    # 2. Intraday / open net positions
+    raw = positions.get("net", []) if isinstance(positions, dict) else positions
     for item in _as_list(raw):
+        qty = int(_num(item.get("quantity", 0)))
+        if qty == 0:
+            continue
         rows.append({
             "symbol": item.get("tradingsymbol", ""),
             "exchange": item.get("exchange", ""),
             "product_type": item.get("product", ""),
-            "quantity": int(_num(item.get("quantity", 0))),
+            "quantity": qty,
             "average_cost": _num(item.get("average_price", 0)),
             "ltp": _num(item.get("last_price", 0)),
             "unrealized_pnl": _num(item.get("unrealised", 0)),

@@ -58,6 +58,12 @@ flowchart TD
 | **`Tradebook`** | Active Live Holdings | Date, Symbol, Sector, Qty, Entry Price, Total Invested, Stop Loss, Trailing Stop, Status |
 | **`to buy`** | Morning Action Orders | Action (`BUY` / `UPDATE GTT` / `EXIT`), Symbol, Qty, Limit Price, Hard Stop (5%), Trailing Stop |
 | **`Multibagger`** | Track 2 Compounders | Long-term fundamental picks, tranche allocations, accumulation dip prices, kill switches |
+| **`Audit Log`** | Performance & Risk Audit | 4-tier dashboard: KPIs, India momentum, US momentum, closed trades ledger, capital preserved |
+
+> [!IMPORTANT]
+> **STRICT USER VISUAL FORMATTING PROTECTION RULE**:
+> The user has manually formatted and styled the Google Sheet tabs (fonts, colors, alternating bands, borders, and custom column widths), particularly **`Audit Log`**.
+> Future modifications, scripts, webhooks, or agents **MUST NEVER** call `sheet.clear()` or reset formatting. Always use `sheet.clearContents()` or targeted range updates (`setValues()`) so that only data values are updated, preserving 100% of the user's visual design intact.
 
 ---
 

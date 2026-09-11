@@ -164,3 +164,7 @@ config.local.json
 .env*
 !agent/.env.example
 
+
+# Local broker configs
+*zerodha.json
+*ibkr*.json
