@@ -40,7 +40,16 @@ pd.set_option("display.max_columns", None)
 pd.set_option("display.width", 240)
 pd.set_option("display.float_format", lambda x: f"{x:.2f}")
 
-WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxDyh9lBxvQFwhTbPatmen-Aog4CUCKSC65-z8ZX0bS-IMznbMQsdHJha5Jb9PHkV4hUw/exec"
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    agent_env = os.path.join(os.path.dirname(os.path.abspath(__file__)), "agent", ".env")
+    if os.path.exists(agent_env):
+        load_dotenv(agent_env)
+except ImportError:
+    pass
+
+WEBHOOK_URL = os.environ.get("GOOGLE_SHEETS_WEBHOOK_URL", "")
 
 # ==============================================================================
 # 1. UNIVERSE DEFINITION
@@ -550,7 +559,7 @@ def run_us_multibagger_screener(sync_to_sheets: bool = False, min_score: float =
     else:
         print("  Zero candidates passed all 4 tiers. Capital remains 100% protected in USD Cash.")
 
-    csv_path = "/Users/nemo/Documents/Vibe Trading/Vibe-Trading/us_multibagger_results.csv"
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "us_multibagger_results.csv")
     df.to_csv(csv_path, index=True, index_label="Rank")
     print(f"\n📁 Full US Four-Tier Audit Results successfully saved to: {csv_path}")
 

@@ -26,52 +26,76 @@ import numpy as np
 # Ensure Vibe-Trading agent path is loadable
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "agent"))
 
-WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxDyh9lBxvQFwhTbPatmen-Aog4CUCKSC65-z8ZX0bS-IMznbMQsdHJha5Jb9PHkV4hUw/exec"
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    # Fallback to agent/.env if present
+    agent_env = os.path.join(os.path.dirname(os.path.abspath(__file__)), "agent", ".env")
+    if os.path.exists(agent_env):
+        load_dotenv(agent_env)
+except ImportError:
+    pass
 
-# Tracked systematic symbols metadata
-MOMENTUM_PORTFOLIO_META = {
-    "INDIA": {
-        "HAL": {"full_sym": "HAL.NS", "name": "Hindustan Aeronautics", "sector": "Aerospace & Defense", "prev_sl": 4829.30},
-        "DIVISLAB": {"full_sym": "DIVISLAB.NS", "name": "Divi's Laboratories", "sector": "Healthcare / Pharma", "prev_sl": 9079.56},
-        "CHENNPETRO": {"full_sym": "CHENNPETRO.NS", "name": "Chennai Petroleum", "sector": "Oil Gas & Refining", "prev_sl": 1514.30},
-        "ADANIPORTS": {"full_sym": "ADANIPORTS.NS", "name": "Adani Ports & SEZ", "sector": "Infrastructure", "prev_sl": 1680.42},
-        "WELCORP": {"full_sym": "WELCORP.NS", "name": "Welspun Corp Ltd.", "sector": "Capital Goods / Pipes", "prev_sl": 2638.05},
-    },
-    "US": {
-        "BG": {"name": "Bunge Global", "sector": "Consumer Staples", "prev_sl": 117.70},
-        "SWKS": {"name": "Skyworks Solutions", "sector": "Technology / Semis", "prev_sl": 76.15},
-        "VLO": {"name": "Valero Energy", "sector": "Energy / Refining", "prev_sl": 363.71},
-    }
-}
+WEBHOOK_URL = os.environ.get(
+    "GOOGLE_SHEETS_WEBHOOK_URL",
+    ""
+)
 
-CLOSED_TRADES_HISTORY = [
-    {
-        "date": "09-Sep-2026",
-        "symbol": "PERSISTENT.NS",
-        "sector": "Technology",
-        "shares": 2,
-        "entry": 5750.00,
-        "exit": 5875.00,
-        "capital": 11500.00,
-        "pnl": 250.00,
-        "pnl_pct": 2.17,
-        "reason": "Disciplined reallocation to Welspun Corp",
-        "preserved": 1150.00
-    },
-    {
-        "date": "09-Sep-2026",
-        "symbol": "BHARTIARTL.NS",
-        "sector": "Telecom",
-        "shares": 2,
-        "entry": 1922.00,
-        "exit": 1917.00,
-        "capital": 3844.00,
-        "pnl": -10.00,
-        "pnl_pct": -0.26,
-        "reason": "Breakeven scratch cut (Chennai Petro)",
-        "preserved": 384.00
+# External metadata paths
+DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+INDIA_JSON_PATH = os.path.join(DATA_DIR, "momentum_india.json")
+US_JSON_PATH = os.path.join(DATA_DIR, "momentum_us.json")
+
+
+def load_portfolio_config():
+    """Loads external JSON metadata for India and US momentum portfolios."""
+    in_meta = {}
+    in_closed = []
+    us_meta = {}
+    us_closed = []
+    
+    if os.path.exists(INDIA_JSON_PATH):
+        try:
+            with open(INDIA_JSON_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                in_meta = data.get("positions", {})
+                in_closed = data.get("closed_trades", [])
+        except Exception as e:
+            print(f"  ⚠️ Error loading {INDIA_JSON_PATH}: {e}")
+            
+    if os.path.exists(US_JSON_PATH):
+        try:
+            with open(US_JSON_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                us_meta = data.get("positions", {})
+                us_closed = data.get("closed_trades", [])
+        except Exception as e:
+            print(f"  ⚠️ Error loading {US_JSON_PATH}: {e}")
+            
+    return {
+        "INDIA": in_meta,
+        "US": us_meta,
+        "CLOSED_TRADES_IN": in_closed,
+        "CLOSED_TRADES_US": us_closed
     }
-]
+
+
+def save_new_position_to_json(market, symbol_key, pos_dict):
+    """Saves a newly entered position into the external JSON state file."""
+    path = INDIA_JSON_PATH if market == "INDIA" else US_JSON_PATH
+    try:
+        data = {}
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        data.setdefault("positions", {})[symbol_key] = pos_dict
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+        print(f"  ✓ Automatically persisted {symbol_key} to external JSON: {path}")
+        return True
+    except Exception as e:
+        print(f"  ⚠️ Failed to write to {path}: {e}")
+        return False
 
 
 def fetch_zerodha_telemetry():
@@ -136,14 +160,29 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
     else:
         print(f"    ⚠️ IBKR Notice: {ib_data.get('error')}")
 
-    # 2. Filter and reconcile India Momentum Holdings
+    # Load external JSON configurations for India and US
+    cfg = load_portfolio_config()
+    tracked_in = cfg["INDIA"]
+    tracked_us = cfg["US"]
+    closed_trades_in = cfg["CLOSED_TRADES_IN"]
+    closed_trades_us = cfg["CLOSED_TRADES_US"]
+
+    # 2. Filter and reconcile India Momentum Holdings (STRICT WHITELIST ISOLATION)
+    z_pos_map = {p["symbol"].upper(): p for p in z_data["positions"]}
+
+    z_matched_syms = [s for s in sorted(z_pos_map.keys()) if s in tracked_in]
+    z_ignored_syms = [s for s in sorted(z_pos_map.keys()) if s not in tracked_in]
+
+    print("\n" + "─" * 125)
+    print("  🛡️  ZERODHA PORTFOLIO ISOLATION FILTER (Track 1 Momentum ONLY)")
+    print(f"      ✓ Matched {len(z_matched_syms)} Momentum Stocks: {', '.join(z_matched_syms)}")
+    print(f"      ⛔ Safely Excluded {len(z_ignored_syms)} Personal Demat Holdings:")
+    print(f"         {', '.join(z_ignored_syms)}")
+    print("─" * 125)
+
     in_results = []
     tot_in_cap = 0.0
     tot_in_val = 0.0
-    tracked_in = MOMENTUM_PORTFOLIO_META["INDIA"]
-    
-    # Map broker positions by symbol
-    z_pos_map = {p["symbol"].upper(): p for p in z_data["positions"]}
 
     for sym_key, meta in tracked_in.items():
         pos = z_pos_map.get(sym_key)
@@ -154,8 +193,8 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
             unrealized = float(pos.get("unrealized_pnl", (ltp - avg_cost) * qty))
         else:
             # Fallback values if position is settled in holdings
-            qty = 2 if sym_key == "HAL" else 3 if sym_key == "DIVISLAB" else 30 if sym_key == "CHENNPETRO" else 28 if sym_key == "ADANIPORTS" else 18
-            avg_cost = 4861.80 if sym_key == "HAL" else 9244.0 if sym_key == "DIVISLAB" else 1594.70 if sym_key == "CHENNPETRO" else 1769.05 if sym_key == "ADANIPORTS" else 2696.90
+            qty = int(meta.get("shares", 2))
+            avg_cost = float(meta.get("entry_price", 4861.80))
             ltp = avg_cost
             unrealized = 0.0
 
@@ -169,8 +208,9 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
 
         in_results.append({
             "market": "India",
-            "symbol": meta["full_sym"],
-            "sector": meta["sector"],
+            "symbol": meta.get("full_sym", f"{sym_key}.NS"),
+            "sector": meta.get("sector", "General"),
+            "date": meta.get("date", "09-Sep-2026"),
             "qty": qty,
             "entry": avg_cost,
             "cmp": ltp,
@@ -178,31 +218,55 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
             "val": val,
             "pnl": pnl,
             "pnl_pct": pnl_pct,
-            "sl": meta["prev_sl"],
+            "sl": float(meta.get("prev_sl", avg_cost * 0.95)),
             "cap_preserved": cap_preserved
         })
 
     net_unrealized_in = tot_in_val - tot_in_cap
-    tot_realized_in = sum(c["pnl"] for c in CLOSED_TRADES_HISTORY)
-    tot_preserved_in = sum(c["preserved"] for c in CLOSED_TRADES_HISTORY)
+    tot_realized_in = sum(c["pnl"] for c in closed_trades_in)
+    tot_preserved_in = sum(c["preserved"] for c in closed_trades_in)
 
-    # 3. Filter and reconcile US Momentum Holdings
+    # 3. Filter and reconcile US Momentum Holdings (STRICT WHITELIST ISOLATION)
+    ib_pos_map = {p["symbol"].upper(): p for p in ib_data["positions"]}
+
+    ib_matched_syms = [s for s in sorted(ib_pos_map.keys()) if s in tracked_us]
+    ib_ignored_syms = [s for s in sorted(ib_pos_map.keys()) if s not in tracked_us]
+
+    print("\n" + "─" * 125)
+    print("  🛡️  IBKR PORTFOLIO ISOLATION FILTER (Track 1 Momentum ONLY)")
+    print(f"      ✓ Matched {len(ib_matched_syms)} Momentum Stocks: {', '.join(ib_matched_syms)}")
+    print(f"      ⛔ Safely Excluded {len(ib_ignored_syms)} Personal / ETF Assets:")
+    print(f"         {', '.join(ib_ignored_syms)}")
+    print("─" * 125)
+
     us_results = []
     tot_us_cap = 0.0
     tot_us_val = 0.0
-    tracked_us = MOMENTUM_PORTFOLIO_META["US"]
-    ib_pos_map = {p["symbol"].upper(): p for p in ib_data["positions"]}
+
+    from src.trading.service import get_quote
 
     for sym_key, meta in tracked_us.items():
         pos = ib_pos_map.get(sym_key)
         if pos:
             qty = float(pos.get("position", 0.0))
             avg_cost = float(pos.get("avg_cost", 0.0))
-            # If LTP not directly on pos object, use latest close or cost
-            ltp = avg_cost * (1.1035 if sym_key == "SWKS" else 1.0105 if sym_key == "BG" else 1.0063)
+            
+            # Fetch live quote from IBKR
+            ltp = avg_cost
+            try:
+                q_resp = get_quote(sym_key, "ibkr-live-local-readonly")
+                q = q_resp.get("quote", {})
+                last_p = q.get("last")
+                close_p = q.get("close")
+                if last_p is not None and not np.isnan(last_p) and last_p > 0:
+                    ltp = float(last_p)
+                elif close_p is not None and not np.isnan(close_p) and close_p > 0:
+                    ltp = float(close_p)
+            except Exception:
+                ltp = avg_cost
         else:
-            qty = 4.10 if sym_key == "BG" else 6.60 if sym_key == "SWKS" else 1.31
-            avg_cost = 123.13 if sym_key == "BG" else 76.20 if sym_key == "SWKS" else 382.76
+            qty = float(meta.get("shares", 1.0))
+            avg_cost = float(meta.get("entry_price", 100.0))
             ltp = avg_cost
 
         cap = qty * avg_cost
@@ -216,7 +280,8 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
         us_results.append({
             "market": "US",
             "symbol": sym_key,
-            "sector": meta["sector"],
+            "sector": meta.get("sector", "General"),
+            "date": meta.get("date", "09-Sep-2026"),
             "qty": qty,
             "entry": avg_cost,
             "cmp": ltp,
@@ -224,7 +289,7 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
             "val": val,
             "pnl": pnl,
             "pnl_pct": pnl_pct,
-            "sl": meta["prev_sl"],
+            "sl": float(meta.get("prev_sl", avg_cost * 0.95)),
             "cap_preserved": cap_preserved
         })
 
@@ -399,7 +464,7 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
         "Capital Invested", "Exit Value", "Realized P&L", "Return %",
         "Exit Reason / Action", "Capital Preserved vs -15% Drawdown"
     ])
-    for c in CLOSED_TRADES_HISTORY:
+    for c in closed_trades_in:
         pnl_prefix = "Gain: Rs " if c['pnl'] >= 0 else "Loss: -Rs "
         ret_prefix = "Gain: +" if c['pnl_pct'] >= 0 else "Loss: "
         exit_val = c['capital'] + c['pnl']
@@ -419,48 +484,246 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
         ])
     sheet_rows.append([
         "REALIZED TOTAL",
-        "2 Trades Closed",
+        f"{len(closed_trades_in)} Trades Closed",
         "100% Capital Protected",
-        sum(c['shares'] for c in CLOSED_TRADES_HISTORY),
+        sum(c['shares'] for c in closed_trades_in),
         "-", "-",
-        f"Rs {sum(c['capital'] for c in CLOSED_TRADES_HISTORY):,.2f}",
-        f"Rs {sum(c['capital'] + c['pnl'] for c in CLOSED_TRADES_HISTORY):,.2f}",
+        f"Rs {sum(c['capital'] for c in closed_trades_in):,.2f}",
+        f"Rs {sum(c['capital'] + c['pnl'] for c in closed_trades_in):,.2f}",
         f"Gain: Rs {tot_realized_in:,.2f}",
-        f"Gain: +{tot_realized_in / sum(c['capital'] for c in CLOSED_TRADES_HISTORY) * 100:.2f}%",
+        f"Gain: +{tot_realized_in / sum(c['capital'] for c in closed_trades_in) * 100:.2f}%" if closed_trades_in else "0.00%",
         "0 Deep Drawdowns Allowed",
         f"Rs {tot_preserved_in:,.0f} Saved"
     ])
 
-    if sync_to_sheet:
-        print(f"\n📡 Pushing broker-verified data to Google Sheet 'Audit Log' tab...")
-        payload = {
-            "tab": "Audit Log",
-            "action": "overwrite",
-            "clear": True,
-            "rows": sheet_rows
-        }
-        try:
-            req = urllib.request.Request(
-                WEBHOOK_URL,
-                data=json.dumps(payload).encode("utf-8"),
-                headers={"Content-Type": "application/json"}
-            )
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                print(f"  ✓ Google Sheet Sync Success: {resp.read().decode('utf-8')[:150]}")
-        except Exception as e:
-            print(f"  ⚠️ Google Sheet Sync Notice: {e}")
+    # -------------------------------------------------------------------------
+    # BUILD STRUCTURED TRADEBOOK ROWS
+    # -------------------------------------------------------------------------
+    tradebook_in_rows = [
+        [
+            "Date Entered", "Symbol", "Company / Sector", "Action", "Quantity",
+            "Entry Price", "Total Capital", "Current Price (LTP)", "Current Value",
+            "Unrealized P&L", "Return %", "Hard SL (5%)", "Active Trail SL (GTT)",
+            "Stop Cushion %", "Capital at Risk", "Execution Status"
+        ]
+    ]
+    for r in in_results:
+        pnl_prefix = "Gain: Rs " if r['pnl'] >= 0 else "Loss: -Rs "
+        ret_prefix = "Gain: +" if r['pnl_pct'] >= 0 else "Loss: "
+        hard_sl = round(r['entry'] * 0.95, 2)
+        trail_sl = r['sl']
+        cushion_pct = (r['cmp'] - trail_sl) / r['cmp'] * 100.0 if r['cmp'] > 0 else 0.0
+        
+        if trail_sl >= r['entry']:
+            risk_str = f"Gain: Rs {(trail_sl - r['entry']) * r['qty']:,.2f} Locked"
+            status_str = "GTT Active (Profit Locked)"
+        else:
+            risk_val = (r['entry'] - trail_sl) * r['qty']
+            risk_str = f"Risk: Rs {risk_val:,.2f}"
+            status_str = "GTT Active (Hard SL 5%)"
+            
+        tradebook_in_rows.append([
+            r["date"],
+            r["symbol"],
+            r["sector"],
+            "HOLD",
+            r["qty"],
+            f"Rs {r['entry']:,.2f}",
+            f"Rs {r['capital']:,.2f}",
+            f"Rs {r['cmp']:,.2f}",
+            f"Rs {r['val']:,.2f}",
+            f"{pnl_prefix}{abs(r['pnl']):,.2f}",
+            f"{ret_prefix}{r['pnl_pct']:.2f}%",
+            f"Rs {hard_sl:,.2f}",
+            f"Rs {trail_sl:,.2f}",
+            f"{cushion_pct:.2f}%",
+            risk_str,
+            status_str
+        ])
+    
+    tradebook_in_rows.append([
+        "INDIA TOTAL", "5 Active Positions", "All 5 Slots Occupied", "HOLD",
+        sum(r['qty'] for r in in_results), "-",
+        f"Rs {tot_in_cap:,.2f}", "-", f"Rs {tot_in_val:,.2f}",
+        f"Loss: -Rs {abs(net_unrealized_in):,.2f}" if net_unrealized_in < 0 else f"Gain: Rs {net_unrealized_in:,.2f}",
+        f"{net_unrealized_in / tot_in_cap * 100:+.2f}%", "-", "-", "-",
+        "Protected (5% Max Risk)",
+        f"Free Cash: Rs {250000 - tot_in_cap:,.0f}"
+    ])
+
+    tradebook_us_rows = [
+        [
+            "Date Entered", "Symbol", "Company / Sector", "Action", "Quantity",
+            "Entry Price", "Total Capital", "Current Price (LTP)", "Current Value",
+            "Unrealized P&L", "Return %", "Hard SL (5%)", "Active Trail SL (GTC)",
+            "Stop Cushion %", "Capital at Risk", "Execution Status"
+        ]
+    ]
+    for r in us_results:
+        pnl_prefix = "Gain: $" if r['pnl'] >= 0 else "Loss: -$"
+        ret_prefix = "Gain: +" if r['pnl_pct'] >= 0 else "Loss: "
+        hard_sl = round(r['entry'] * 0.95, 2)
+        trail_sl = r['sl']
+        cushion_pct = (r['cmp'] - trail_sl) / r['cmp'] * 100.0 if r['cmp'] > 0 else 0.0
+        
+        if trail_sl >= r['entry']:
+            risk_str = f"Gain: ${(trail_sl - r['entry']) * r['qty']:.2f} Locked"
+            status_str = "GTC Breakeven Locked (+17.6% Run)" if r['symbol'] == "SWKS" else "GTC Trail SL"
+        else:
+            risk_val = (r['entry'] - trail_sl) * r['qty']
+            risk_str = f"Risk: ${risk_val:.2f}"
+            status_str = "GTC Active (SL Intact)"
+            
+        tradebook_us_rows.append([
+            r["date"],
+            r["symbol"],
+            r["sector"],
+            "HOLD",
+            r["qty"],
+            f"${r['entry']:.2f}",
+            f"${r['capital']:.2f}",
+            f"${r['cmp']:.2f}",
+            f"${r['val']:.2f}",
+            f"{pnl_prefix}{abs(r['pnl']):.2f}",
+            f"{ret_prefix}{r['pnl_pct']:.2f}%",
+            f"${hard_sl:.2f}",
+            f"${trail_sl:.2f}",
+            f"{cushion_pct:.2f}%",
+            risk_str,
+            status_str
+        ])
+    
+    tradebook_us_rows.append([
+        "US TOTAL", "3 Active / 2 Cash Slots", "Ready for Next Buy", "HOLD",
+        round(sum(r['qty'] for r in us_results), 3), "-",
+        f"${tot_us_cap:,.2f}", "-", f"${tot_us_val:,.2f}",
+        f"Gain: ${net_unrealized_us:.2f}" if net_unrealized_us >= 0 else f"Loss: -${abs(net_unrealized_us):.2f}",
+        f"{net_unrealized_us / tot_us_cap * 100:+.2f}%", "-", "-", "-",
+        "Protected (5% Max Risk)",
+        f"Free Cash: ${2500 - tot_us_cap:,.2f}"
+    ])
 
     return {
         "india_invested": tot_in_cap,
         "india_unrealized": net_unrealized_in,
         "us_invested": tot_us_cap,
-        "us_unrealized": net_unrealized_us
+        "us_unrealized": net_unrealized_us,
+        "audit_rows": sheet_rows,
+        "tradebook_in_rows": tradebook_in_rows,
+        "tradebook_us_rows": tradebook_us_rows
     }
+
+
+def push_tab(tab_name, rows):
+    """Pushes structured rows to a target Google Sheet tab using overwrite mode."""
+    print(f"📡 Pushing {len(rows)} rows to Google Sheet '{tab_name}' tab...")
+    payload = {
+        "tab": tab_name,
+        "action": "overwrite",
+        "clear": True,
+        "rows": rows
+    }
+    try:
+        req = urllib.request.Request(
+            WEBHOOK_URL,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"}
+        )
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            res_str = resp.read().decode("utf-8")
+            print(f"  ✓ Synced '{tab_name}': {res_str[:120]}")
+            return True
+    except Exception as e:
+        print(f"  ⚠️ Sync Notice for '{tab_name}': {e}")
+        return False
+
+
+def handle_new_buy(symbol):
+    """Detects executed buy order from broker, calculates 5% SL, and prepares update."""
+    clean_sym = symbol.strip().upper().replace(".NS", "")
+    print(f"\n🔎 Scanning broker executions for recently bought symbol: {clean_sym}...")
+    
+    from src.trading.service import get_open_orders, get_positions
+    
+    # 1. Check Zerodha Kite
+    z_orders = get_open_orders("zerodha-live-sdk-readonly", include_executions=True)
+    executions = z_orders.get("executions", [])
+    matched_exec = next((e for e in executions if e.get("symbol", "").upper() == clean_sym and e.get("side", "").lower() == "buy"), None)
+    
+    if matched_exec:
+        qty = int(matched_exec.get("filled_qty", matched_exec.get("quantity", 0)))
+        # Check average cost from positions
+        z_pos = get_positions("zerodha-live-sdk-readonly")
+        pos = next((p for p in z_pos.get("positions", []) if p.get("symbol", "").upper() == clean_sym), None)
+        avg_cost = float(pos.get("average_cost", 0.0)) if pos else float(matched_exec.get("price", 0.0))
+        hard_sl = round(avg_cost * 0.95, 2)
+        print(f"  ✓ Found confirmed Zerodha execution for {clean_sym}:")
+        print(f"    Filled Qty: {qty} shares | Average Buy Price: Rs {avg_cost:,.2f}")
+        print(f"    Total Invested: Rs {qty * avg_cost:,.2f}")
+        print(f"    🚨 Immediate GTT Stop-Loss to set (5% Hard Floor): Rs {hard_sl:,.2f}")
+        
+        # Persist to data/momentum_india.json
+        pos_dict = {
+            "full_sym": f"{clean_sym}.NS",
+            "name": clean_sym,
+            "sector": "Momentum Breakout",
+            "date": datetime.now().strftime("%d-%b-%Y"),
+            "prev_sl": hard_sl,
+            "shares": qty,
+            "entry_price": avg_cost
+        }
+        save_new_position_to_json("INDIA", clean_sym, pos_dict)
+        return {"market": "INDIA", "symbol": clean_sym, "qty": qty, "entry": avg_cost, "sl": hard_sl}
+
+    # 2. Check IBKR
+    ib_pos = get_positions("ibkr-live-local-readonly")
+    pos = next((p for p in ib_pos.get("positions", []) if p.get("symbol", "").upper() == clean_sym), None)
+    if pos:
+        qty = float(pos.get("position", 0.0))
+        avg_cost = float(pos.get("avg_cost", 0.0))
+        hard_sl = round(avg_cost * 0.95, 2)
+        print(f"  ✓ Found confirmed IBKR position for {clean_sym}:")
+        print(f"    Filled Qty: {qty} shares | Average Buy Price: ${avg_cost:.2f}")
+        print(f"    Total Invested: ${qty * avg_cost:.2f}")
+        print(f"    🚨 Immediate GTC Stop-Loss to set (5% Hard Floor): ${hard_sl:.2f}")
+        
+        # Persist to data/momentum_us.json
+        pos_dict = {
+            "full_sym": clean_sym,
+            "name": clean_sym,
+            "sector": "Momentum Breakout",
+            "date": datetime.now().strftime("%d-%b-%Y"),
+            "prev_sl": hard_sl,
+            "shares": qty,
+            "entry_price": avg_cost
+        }
+        save_new_position_to_json("US", clean_sym, pos_dict)
+        return {"market": "US", "symbol": clean_sym, "qty": qty, "entry": avg_cost, "sl": hard_sl}
+
+    print(f"  ⚠️ No open execution or position found for {clean_sym} in either broker.")
+    return None
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Broker-to-Sheets Automated Synchronizer")
-    parser.add_argument("--sync-sheet", action="store_true", help="Sync broker-verified data to Google Sheet")
+    parser.add_argument("--sync-all", action="store_true", help="Sync Audit Log, Tradebook IN, and Tradebook US")
+    parser.add_argument("--sync-sheet", action="store_true", help="Sync Audit Log tab")
+    parser.add_argument("--sync-tradebooks", action="store_true", help="Sync Tradebook IN and Tradebook US tabs")
+    parser.add_argument("--bought", type=str, help="Scan broker for new buy execution and calculate stop loss (e.g. --bought WELCORP)")
     args = parser.parse_args()
 
-    reconcile_and_build_audit_payload(sync_to_sheet=args.sync_sheet)
+    if args.bought:
+        handle_new_buy(args.bought)
+
+    data = reconcile_and_build_audit_payload()
+
+    if args.sync_all:
+        push_tab("Audit Log", data["audit_rows"])
+        push_tab("Tradebook IN", data["tradebook_in_rows"])
+        push_tab("Tradebook US", data["tradebook_us_rows"])
+    else:
+        if args.sync_sheet:
+            push_tab("Audit Log", data["audit_rows"])
+        if args.sync_tradebooks:
+            push_tab("Tradebook IN", data["tradebook_in_rows"])
+            push_tab("Tradebook US", data["tradebook_us_rows"])

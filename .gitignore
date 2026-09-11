@@ -62,7 +62,8 @@ agent/uploads/
 /memory/
 /memory_index/
 /cache/
-/data/
+/data/*
+!/data/*.example.json
 /reports/
 /hypotheses/
 /history/
@@ -179,7 +180,9 @@ multibagger_screen.py
 *.sheet
 *.local.*
 config.local.json
+*tradebook*
 .env*
+!.env.example
 !agent/.env.example
 
 

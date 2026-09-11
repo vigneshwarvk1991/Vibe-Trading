@@ -1,0 +1,20 @@
+{
+  "market": "US",
+  "currency": "USD",
+  "budget": 2500.0,
+  "slots": 5,
+  "slot_capital": 500.0,
+  "max_risk_per_trade": 25.0,
+  "positions": {
+    "SAMPLE1": {
+      "full_sym": "SAMPLE1",
+      "name": "Sample Global Corp",
+      "sector": "Technology",
+      "date": "01-Jan-2026",
+      "prev_sl": 95.00,
+      "shares": 5.0,
+      "entry_price": 100.00
+    }
+  },
+  "closed_trades": []
+}

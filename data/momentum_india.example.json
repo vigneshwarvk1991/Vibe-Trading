@@ -1,0 +1,20 @@
+{
+  "market": "INDIA",
+  "currency": "INR",
+  "budget": 250000.0,
+  "slots": 5,
+  "slot_capital": 50000.0,
+  "max_risk_per_trade": 2500.0,
+  "positions": {
+    "SAMPLE1": {
+      "full_sym": "SAMPLE1.NS",
+      "name": "Sample Enterprise Ltd",
+      "sector": "Industrial",
+      "date": "01-Jan-2026",
+      "prev_sl": 1900.00,
+      "shares": 25,
+      "entry_price": 2000.00
+    }
+  },
+  "closed_trades": []
+}

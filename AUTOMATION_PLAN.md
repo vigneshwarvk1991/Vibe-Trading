@@ -79,10 +79,11 @@ Automated Evening Scanner & Order Generator for Zerodha (10 Slots x ₹25,000)
 import yfinance as yf
 import pandas as pd
 import numpy as np
-import requests
-import json
+import os
+from dotenv import load_dotenv
 
-WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxDyh9lBxvQFwhTbPatmen-Aog4CUCKSC65-z8ZX0bS-IMznbMQsdHJha5Jb9PHkV4hUw/exec'
+load_dotenv()
+WEBHOOK_URL = os.getenv('GOOGLE_SHEETS_WEBHOOK_URL', '')
 SLOT_CAPITAL = 25000
 TOTAL_SLOTS = 10
 
@@ -176,3 +177,20 @@ We will then:
 1. Update `EQUITY_PLAYBOOK.md` to 10 slots.
 2. Activate the daily automated runner.
 3. Begin populating Slots 5–10 as fresh breakouts occur.
+
+---
+
+## 7. Broker-to-Sheets Live Synchronization & Strict Momentum Isolation
+
+The live synchronizer script (`sync_brokers_to_sheets.py`) interfaces with read-only broker connectors (**Zerodha KiteConnect** and **Interactive Brokers IB Gateway**) and enforces strict security and portfolio isolation:
+
+1. **Strict Whitelist Isolation (Track 1 Momentum ONLY):**
+   - **India (Zerodha CNC):** The syncer inspects all 24 demat holdings but isolates **only** the registered Track 1 Momentum stocks (`HAL`, `DIVISLAB`, `CHENNPETRO`, `ADANIPORTS`, `WELCORP`). All 19 personal long-term holdings (e.g. `IREDA`, `RELIANCE`, `TITAN`, `SGBFEB32IV-GB`, `INDHOTEL`, `TATASTEEL`, etc.) are safely ignored and excluded from all metrics.
+   - **US (Interactive Brokers):** The syncer inspects all 7 account positions but isolates **only** the registered Track 1 Momentum stocks (`BG`, `SWKS`, `VLO`). All 4 personal/passive ETF assets (`VWRA`, `WSML`, `USSC`, `MU`) are safely ignored and excluded.
+2. **Dedicated Budget Accounting:**
+   - Free cash balances are calculated against the dedicated momentum budgets (₹2,50,000 for India; $2,500 for US), completely isolated from broader broker account margins or net liquidations.
+3. **Preservation of User Sheet Formatting:**
+   - The webhook replaces data cell contents only (`clearContents()`), preserving all custom colors, fonts, borders, and column widths across exactly 24 rows in the `Audit Log` tab.
+4. **Read-Only Safety Guarantee:**
+   - Connectors run with `readonly: true`. No automated orders or modifications can be initiated through this layer.
+

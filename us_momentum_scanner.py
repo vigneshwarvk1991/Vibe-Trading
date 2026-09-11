@@ -41,7 +41,16 @@ pd.set_option("display.max_columns", None)
 pd.set_option("display.width", 240)
 pd.set_option("display.float_format", lambda x: f"{x:.2f}")
 
-WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxDyh9lBxvQFwhTbPatmen-Aog4CUCKSC65-z8ZX0bS-IMznbMQsdHJha5Jb9PHkV4hUw/exec"
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    agent_env = os.path.join(os.path.dirname(os.path.abspath(__file__)), "agent", ".env")
+    if os.path.exists(agent_env):
+        load_dotenv(agent_env)
+except ImportError:
+    pass
+
+WEBHOOK_URL = os.environ.get("GOOGLE_SHEETS_WEBHOOK_URL", "")
 SLOT_USD = 500.0
 MAX_RISK_USD = 25.0
 
@@ -261,7 +270,7 @@ def run_us_momentum_scanner(sync_to_sheets=False, top_n=10):
     if not near_df.empty:
         print(near_df[watch_cols].to_string())
 
-    csv_path = "/Users/nemo/Documents/Vibe Trading/Vibe-Trading/us_momentum_results.csv"
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "us_momentum_results.csv")
     df_res.to_csv(csv_path, index=False)
     print(f"\n[OK] Full scan results saved to: {csv_path}")
 

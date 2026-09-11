@@ -488,7 +488,7 @@ When your friend (or any external source) sends you a BTST tip:
 
 ### Starting the Server
 ```bash
-cd "/Users/nemo/Documents/Vibe Trading/Vibe-Trading"
+cd /path/to/Vibe-Trading
 source .venv/bin/activate
 python agent/api_server.py
 ```
