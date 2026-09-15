@@ -18,7 +18,7 @@
 6. [Risk Management Rulebook](#6-risk-management-rulebook)
 7. [BTST Signal Validation Protocol](#7-btst-signal-validation-protocol)
 8. [Vibe-Trading SDK Quick Reference](#8-vibe-trading-sdk-quick-reference)
-9. [Capital Scaling Guidelines](#9-capital-scaling-guidelines)
+9. [Capital Scaling & Secondary Revenue Stream Protocol](#9-capital-scaling--secondary-revenue-stream-protocol)
 10. [Glossary of Key Terms](#10-glossary-of-key-terms)
 
 ---
@@ -449,7 +449,7 @@ Show me exactly where I lost money due to emotional decisions.
 | **Stops Only Move UP** | Trailing stops are only adjusted upward, never downward | Locks in profits systematically |
 | **Max 5 Positions** | Never hold more than 5 active trades simultaneously | Prevents over-diversification |
 | **No Averaging Down** | NEVER add to a losing active trade | Averaging down = compounding mistakes |
-| **Drawdown Circuit Breaker** | If portfolio drops -15%, reduce slot size to ₹25,000 for 4 weeks | Capital preservation during bad regimes |
+| **Drawdown Circuit Breaker** | If portfolio drops -10%, -15%, or -20% from HWM, graduated slot reduction kicks in (see §9 Drawdown Management) | Capital preservation during bad regimes |
 | **No Trading During News** | Skip entries on Budget Day, RBI Policy, Election Results | Gap risk destroys stop-losses |
 
 ### Multibagger Investing (Track 2) — Patience Rules
@@ -525,23 +525,177 @@ Go to **Scheduled** tab → Create Scheduled Run:
 
 ---
 
-## 9. CAPITAL SCALING GUIDELINES
+## 9. CAPITAL SCALING & SECONDARY REVENUE STREAM PROTOCOL
 
-### When to Scale Up Active Trading Capital
+### The Central Insight: Slots Are Fixed, Capital Is Not
 
-| Milestone | Action |
-|:---|:---|
-| **Month 1–2** | Trade with initial ₹2.5L capital (5 slots × ₹50,000). Master execution rhythm. |
-| **After 3 months of consistent profit** | Add ₹2.5L → ₹5.0L (increase to 5 slots × ₹1.0L) |
-| **After 6 months with Sharpe > 1.0** | Add ₹2.5L → ₹7.5L (5 slots × ₹1.5L) |
-| **After 12 months of audited track record** | Consider adding options (Engine 2) and crypto (Engine 3) |
+> **Core Principle:** The number of concurrent momentum positions stays at **5 slots per market** (India and US). You never increase to 8, 10, or 15 momentum slots — that dilutes conviction, fragments attention, and collapses into index-hugging with extra commission drag. Instead, as capital grows, **each slot gets larger**. Percentage risk remains invariant at 1.0% of total equity per trade.
 
-### When to Scale Down
+```
+  PHASE 1 (Sep–Dec 2026)            PHASE 2 (Jan 2027+)             PHASE 3 (At Scale)
+  ─────────────────────              ──────────────────               ─────────────────
+  Sandbox Validation                 Revenue Stream Engine            Mature Alpha Engine
+
+  India: ₹2.5L / 5 = ₹50K/slot      India: ₹5L / 5 = ₹1L/slot       India: ₹15L / 5 = ₹3L/slot
+  US:    $2.5K / 5 = $500/slot       US:    $5K / 5 = $1K/slot        US:    $25K / 5 = $5K/slot
+  Risk:  1% = ₹2,500 / $25          Risk:  1% = ₹5,000 / $50         Risk:  1% = ₹15,000 / $250
+  Goal:  Validate mechanics          Goal:  Grow + Extract Income     Goal:  Compound + Sweep
+```
+
+---
+
+### Why Slots Stay at 5 (The Conviction-Attention Bottleneck)
+
+1. **Monitoring Load Scales Linearly:** Each active position requires daily stop management, weekly ATR recalculation, and periodic sector rotation checks. 5 positions across 2 markets = 10 daily checkpoints. This fits inside a 10-minute routine. At 10 slots per market, you'd need 20+ daily checkpoints — turning a part-time system into a full-time job.
+
+2. **Conviction Capital Compounding:** The 20-day breakout filter already narrows 500+ stocks to 0–3 candidates per scan. When your scanner finds 1 confirmed breakout, you want ₹1L or $1K behind it — not ₹25K split across 10 lukewarm ideas. Concentrated conviction is where alpha lives.
+
+3. **Statistical Invariance of the Edge:** The backtest (Sharpe 2.52, Win Rate 72.7%) was calibrated on 5-slot capital allocation. Changing slot count changes trade sizing, which changes fill behavior, slippage, and sector concentration. The validated edge applies to 5 slots.
+
+4. **The Real Lever Is Slot Size, Not Slot Count:** Doubling from ₹50K to ₹1L per slot doubles your absolute P&L on every winning trade while keeping the 5% stop and 1% portfolio risk rules perfectly intact. The math:
+
+$$\text{Slot Capital} = \frac{\text{Total Track 1 Equity}}{5}$$
+
+$$\text{Max Loss per Trade} = \text{Slot Capital} \times 5\% = 1\% \times \text{Total Equity}$$
+
+This identity holds regardless of whether total equity is ₹2.5L or ₹25L.
+
+---
+
+### Tiered Slot-Size Escalation Schedule
+
+| Tier | Total Equity (India) | Slot Size | Max Loss/Trade | Trigger to Advance |
+|:---|:---|:---|:---|:---|
+| **T0 – Sandbox** | ₹2,50,000 | ₹50,000 | ₹2,500 | Current phase (Sep–Dec 2026) |
+| **T1 – Foundation** | ₹5,00,000 | ₹1,00,000 | ₹5,000 | 3 months of net profit + Sharpe ≥ 1.0 |
+| **T2 – Growth** | ₹10,00,000 | ₹2,00,000 | ₹10,000 | 6 months of audited track record |
+| **T3 – Scale** | ₹15,00,000+ | ₹3,00,000 | ₹15,000 | 12 months track record + revenue sweep active |
+
+| Tier | Total Equity (US) | Slot Size | Max Loss/Trade | Trigger to Advance |
+|:---|:---|:---|:---|:---|
+| **T0 – Sandbox** | $2,500 | $500 | $25 | Current phase (Sep–Dec 2026) |
+| **T1 – Foundation** | $5,000 | $1,000 | $50 | 3 months of net profit + Sharpe ≥ 1.0 |
+| **T2 – Growth** | $15,000 | $3,000 | $150 | 6 months of audited track record |
+| **T3 – Scale** | $25,000+ | $5,000 | $250 | 12 months track record + revenue sweep active |
+
+> **Advancement Rule:** You may only advance to the next tier by **injecting fresh capital from savings** (never by borrowing or using leveraged instruments). The tier system exists to prevent the psychological trap of scaling up too fast after a lucky streak.
+
+---
+
+### Capital Sources for Tier Advancement
+
+Post-January, with ETFs and mutual funds handled from primary salary, the Trading Pool grows from **three distinct sources**:
+
+1. **Retained Compounding (50% of Net Realized Profits):** Half of every quarter's realized trading gains stays in the account and naturally increases the next quarter's slot sizes. This is the core compounding engine.
+
+2. **Discretionary Capital Injection from Savings:** If you choose to accelerate tier advancement, inject a fixed monthly amount (e.g., ₹25,000/month or $300/month) into the trading pool. **Never inject during a drawdown to "make it back faster."** Only inject at new equity highs or on a fixed calendar schedule.
+
+3. **Multibagger Rebalancing Overflow:** When a Track 2 Multibagger position is exited on a fundamental kill switch, the proceeds can be recycled into Track 1 momentum capital (if the account is at a new equity high) or redeployed into a new Track 2 compounder.
+
+---
+
+### Secondary Revenue Stream: The Quarterly High-Water-Mark Sweep
+
+> **Objective:** Transform the Trading Pool from a pure capital-growth account into a **dependable secondary income stream** without starving the compounding engine.
+
+#### How the Sweep Works
+
+```
+  End of Quarter (Q1 2027, Q2 2027, ...)
+  ──────────────────────────────────────────
+
+  1. Calculate: Net Realized Profit = Total Closed P&L This Quarter
+  2. Check:    Is Net Realized Profit > 0?
+
+     NO  →  No sweep. 100% retained. Review with risk_committee swarm.
+     YES →  Continue to step 3.
+
+  3. Check:    Is current Total Equity > Previous High-Water Mark?
+
+     NO  →  No sweep. You're recovering from a drawdown. 100% retained.
+     YES →  Continue to step 4.
+
+  4. Calculate: Sweepable Amount = 50% × (Current Equity − Previous HWM)
+
+  5. Execute:  Transfer Sweepable Amount to personal bank account.
+              Update HWM = Current Equity (after sweep).
+              Record sweep in Trade Journal.
+```
+
+#### Worked Example
+
+| Quarter | Starting Equity | Realized P&L | Ending Equity | HWM (Before) | Sweepable? | Sweep Amount | New HWM |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| Q1 2027 | ₹5,00,000 | +₹62,000 | ₹5,62,000 | ₹5,00,000 | ✅ Yes | ₹31,000 | ₹5,31,000 |
+| Q2 2027 | ₹5,31,000 | −₹18,000 | ₹5,13,000 | ₹5,31,000 | ❌ No (below HWM) | ₹0 | ₹5,31,000 |
+| Q3 2027 | ₹5,13,000 | +₹45,000 | ₹5,58,000 | ₹5,31,000 | ✅ Yes | ₹13,500 | ₹5,44,500 |
+| Q4 2027 | ₹5,44,500 | +₹80,000 | ₹6,24,500 | ₹5,44,500 | ✅ Yes | ₹40,000 | ₹5,84,500 |
+
+In this example, ₹84,500 was swept as personal income across 3 profitable quarters, while the account grew from ₹5,00,000 to ₹5,84,500 (compounding at 16.9% annualized net of sweeps).
+
+---
+
+### Drawdown Management at Scale
+
+As slot sizes grow, the absolute rupee/dollar amounts in drawdowns feel larger even though the percentage is identical. This is a **psychological scaling risk**, not a mathematical one. The following circuit breakers adapt to larger account sizes:
+
+| Trigger | Action | Duration |
+|:---|:---|:---|
+| **3 consecutive stop-outs** | Pause all new entries. Run Shadow Account audit. | 1 week minimum |
+| **Monthly loss > −5% of equity** | Run `risk_committee` swarm. Evaluate macro regime. | Until swarm clears |
+| **Drawdown > −10% from HWM** | Reduce slot size to **60% of normal** (e.g., ₹1.2L → ₹72K). | 4 weeks or until new HWM |
+| **Drawdown > −15% from HWM** | Reduce slot size to **40% of normal**. Suspend quarterly sweep. | 8 weeks or until recovery to −8% |
+| **Drawdown > −20% from HWM** | **Full trading halt.** Zero new entries. Complete strategy review with `quant_strategy_desk` swarm. Resume only after regime analysis clears. | Until monthly equity curve is rising again |
+
+> **Iron Rule at Scale:** The -20% full halt exists because at T3 (₹15L), a -20% drawdown is ₹3,00,000 — real money. The same discipline that protects ₹50K slots protects ₹3L slots. The system is identical; only the stakes are different.
+
+---
+
+### What Changes Post-January vs. What Stays the Same
+
+| Component | Stays the Same | Changes Post-January |
+|:---|:---|:---|
+| **Number of Momentum Slots** | ✅ 5 per market | — |
+| **Entry Rules (All 5 Criteria)** | ✅ Unchanged | — |
+| **Exit Rules (5% stop, ATR trail)** | ✅ Unchanged | — |
+| **Risk per Trade** | ✅ Always 1% of total equity | — |
+| **Slot Capital** | — | 📈 Grows with total equity (₹50K → ₹1L → ₹2L → ₹3L) |
+| **Budget Cap** | — | 🔓 Removed. `data/momentum_*.json` `budget` field tracks current equity, not a hard ceiling |
+| **Revenue Extraction** | — | 💸 Quarterly HWM sweep begins Q1 2027 |
+| **Drawdown Thresholds** | — | 📊 Graduated circuit breakers (−10%, −15%, −20%) replace single −15% rule |
+| **Track 2 (Multibagger) Capital** | — | 📈 Also uncapped. Slot sizes grow proportionally (₹25K → ₹50K → ₹1L per compounder) |
+
+---
+
+### JSON State File Management at Scale
+
+The `budget` field in `data/momentum_india.json` and `data/momentum_us.json` transitions from a **hard cap** to a **current equity tracker**:
+
+```json
+{
+  "market": "INDIA",
+  "budget": 500000.0,      // ← Now means "current Track 1 equity" not "never exceed"
+  "slots": 5,              // ← Always 5
+  "slot_capital": 100000.0, // ← Dynamically = budget / slots
+  "max_risk_per_trade": 5000.0, // ← Dynamically = budget * 0.01
+  "hwm": 500000.0,         // ← High-Water Mark for revenue sweep
+  "tier": "T1",            // ← Current scaling tier
+  ...
+}
+```
+
+The `slot_capital` and `max_risk_per_trade` fields should be recalculated automatically by the sync script whenever `budget` is updated after a tier change or capital injection.
+
+---
+
+### Scaling Down (When to Reduce, Not Just Grow)
+
 | Trigger | Action |
 |:---|:---|
 | **3 consecutive stop-outs** | Pause new entries for 1 week. Review with Shadow Account. |
-| **Portfolio drawdown > -15%** | Cut slot size to ₹25,000 for 4 weeks. |
-| **Monthly loss > -5%** | Run risk_committee swarm. Identify if market regime changed. |
+| **Portfolio drawdown > −15%** | Cut slot size to 40% of normal for 8 weeks. |
+| **Monthly loss > −5%** | Run `risk_committee` swarm. Identify if market regime changed. |
+| **Life Event (Job Change, Major Expense)** | Sweep 100% of available cash from trading pool. Reduce tier. Resume when financially stable. |
 
 ---
 
@@ -742,6 +896,6 @@ Run a momentum leadership scan across the S&P 500 and Nasdaq 100 universe as of 
 
 ---
 
-*Playbook v2.0 — Updated September 2026 (Institutional 4-Quadrant Architecture: India & US)*  
+*Playbook v2.1 — Updated 15-Sep-2026 (Added §9: Capital Scaling & Secondary Revenue Stream Protocol)*  
 *Review and update this playbook monthly or after any significant capital/strategy changes.*
 

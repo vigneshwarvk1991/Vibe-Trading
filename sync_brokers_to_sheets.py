@@ -425,7 +425,10 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
     for r in us_results:
         pnl_prefix = "Gain: $" if r['pnl'] >= 0 else "Loss: -$"
         ret_prefix = "Gain: +" if r['pnl_pct'] >= 0 else "Loss: "
-        sl_note = f"${r['sl']:.2f} (Breakeven Locked!)" if r['symbol'] == 'SWKS' else f"${r['sl']:.2f}"
+        if r['sl'] >= r['entry']:
+            sl_note = f"${r['sl']:.2f} (Profit Lock!)" if (r['sl'] - r['entry']) / r['entry'] > 0.01 else f"${r['sl']:.2f} (Breakeven Locked!)"
+        else:
+            sl_note = f"${r['sl']:.2f}"
         sheet_rows.append([
             "US",
             r["symbol"],
@@ -568,7 +571,8 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
         
         if trail_sl >= r['entry']:
             risk_str = f"Gain: ${(trail_sl - r['entry']) * r['qty']:.2f} Locked"
-            status_str = "GTC Breakeven Locked (+17.6% Run)" if r['symbol'] == "SWKS" else "GTC Trail SL"
+            gain_pct = (trail_sl - r['entry']) / r['entry'] * 100.0
+            status_str = f"GTC Profit Lock (+{gain_pct:.1f}%)" if gain_pct > 1.0 else "GTC Breakeven Locked"
         else:
             risk_val = (r['entry'] - trail_sl) * r['qty']
             risk_str = f"Risk: ${risk_val:.2f}"
