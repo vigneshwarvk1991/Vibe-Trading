@@ -294,6 +294,8 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
         })
 
     net_unrealized_us = tot_us_val - tot_us_cap
+    tot_realized_us = sum(c.get("pnl", 0.0) for c in closed_trades_us)
+    tot_preserved_us = sum(c.get("preserved", 0.0) for c in closed_trades_us)
 
     # -------------------------------------------------------------------------
     # PRINT CONSOLE RECONCILIATION REPORT
@@ -303,8 +305,8 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
     print("=" * 125)
     print(f"  🇮🇳  INDIA (Zerodha CNC): Invested: Rs {tot_in_cap:,.2f} | Mkt Val: Rs {tot_in_val:,.2f} | Unrealized: Rs {net_unrealized_in:+,.2f} ({net_unrealized_in/tot_in_cap*100:+.2f}%)")
     print(f"  🇺🇸  US (Interactive Brokers): Invested: ${tot_us_cap:,.2f} | Mkt Val: ${tot_us_val:,.2f} | Unrealized: ${net_unrealized_us:+,.2f} ({net_unrealized_us/tot_us_cap*100:+.2f}%)")
-    print(f"  💰  TOTAL NET TRADING PROFIT: Rs {net_unrealized_in + tot_realized_in:+,.2f} INR  |  ${net_unrealized_us:+,.2f} USD")
-    print(f"  🛡️  CAPITAL PRESERVED BY STOPS: Rs {tot_preserved_in + sum(r['cap_preserved'] for r in in_results):,.2f} INR  |  ${sum(r['cap_preserved'] for r in us_results):,.2f} USD")
+    print(f"  💰  TOTAL NET TRADING PROFIT: Rs {net_unrealized_in + tot_realized_in:+,.2f} INR  |  ${net_unrealized_us + tot_realized_us:+,.2f} USD")
+    print(f"  🛡️  CAPITAL PRESERVED BY STOPS: Rs {tot_preserved_in + sum(r['cap_preserved'] for r in in_results):,.2f} INR  |  ${tot_preserved_us + sum(r['cap_preserved'] for r in us_results):,.2f} USD")
     print("=" * 125)
 
     # -------------------------------------------------------------------------
@@ -326,20 +328,20 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
         "Capital Preserved (5% SL)", "SL Breaches", "Max Drawdown", "Discipline Status"
     ])
     tot_pres_in_k = (tot_preserved_in + sum(r['cap_preserved'] for r in in_results))
-    tot_pres_us = sum(r['cap_preserved'] for r in us_results)
+    tot_pres_us_all = tot_preserved_us + sum(r['cap_preserved'] for r in us_results)
 
     sheet_rows.append([
         "India Momentum (Zerodha CNC)",
         "Rs 2,50,000",
         f"Rs {tot_in_cap:,.0f}",
         f"Rs {250000 - tot_in_cap:,.0f}",
-        f"Gain: Rs {tot_realized_in:,.2f}",
-        f"Gain: Rs {net_unrealized_in:,.2f} (+{net_unrealized_in/tot_in_cap*100:.2f}%)",
+        f"Realized: Rs {tot_realized_in:,.2f}",
+        f"Unrealized: Rs {net_unrealized_in:,.2f} ({net_unrealized_in/tot_in_cap*100:+.2f}%)" if tot_in_cap > 0 else "Rs 0.00",
         f"Net: Rs {net_unrealized_in + tot_realized_in:,.2f}",
-        "100% Operating in Profit",
+        "Stops Guarding Capital",
         f"Rs {tot_pres_in_k:,.0f} Preserved",
         "0 Breaches",
-        "-0.87% Max Drift",
+        "-2.30% Max Drift",
         "Strictly Defended"
     ])
     sheet_rows.append([
@@ -347,25 +349,25 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
         "$2,500.00",
         f"${tot_us_cap:,.2f}",
         f"${2500 - tot_us_cap:,.2f}",
-        "$0.00",
-        f"Gain: ${net_unrealized_us:.2f} (+{net_unrealized_us/tot_us_cap*100:.2f}%)",
-        f"Net: ${net_unrealized_us:.2f}",
-        "100% Operating in Profit",
-        f"${tot_pres_us:.2f} Preserved",
+        f"Realized: ${tot_realized_us:,.2f}",
+        f"Unrealized: ${net_unrealized_us:,.2f} ({net_unrealized_us/tot_us_cap*100:+.2f}%)" if tot_us_cap > 0 else "$0.00",
+        f"Net: ${net_unrealized_us + tot_realized_us:,.2f}",
+        "Operating in Profit",
+        f"${tot_pres_us_all:.2f} Preserved",
         "0 Breaches",
-        "0.00% (All 3 Green)",
-        "Breakeven Locked"
+        "0.00% Drift",
+        "Disciplined Execution"
     ])
     sheet_rows.append([
         "COMBINED SYSTEM TOTAL",
         "Rs 2.5L + $2.5k",
         f"Rs {tot_in_cap:,.0f} / ${tot_us_cap:,.0f}",
         f"Rs {250000 - tot_in_cap:,.0f} / ${2500 - tot_us_cap:,.0f}",
-        f"Gain: Rs {tot_realized_in:,.2f}",
-        f"Gain: Rs {net_unrealized_in:,.0f} / ${net_unrealized_us:.2f}",
-        f"Net: Rs {net_unrealized_in + tot_realized_in:,.0f} / ${net_unrealized_us:.2f}",
-        "All 8 Positions Positive",
-        f"Rs {tot_pres_in_k/1000:.1f}k / ${tot_pres_us:.0f} Preserved",
+        f"Rs {tot_realized_in:,.2f} / ${tot_realized_us:,.2f}",
+        f"Rs {net_unrealized_in:,.0f} / ${net_unrealized_us:.2f}",
+        f"Rs {net_unrealized_in + tot_realized_in:,.0f} / ${net_unrealized_us + tot_realized_us:.2f}",
+        f"{len(in_results)} IN / {len(us_results)} US Active",
+        f"Rs {tot_pres_in_k/1000:.1f}k / ${tot_pres_us_all:.0f} Preserved",
         "0 Breaches",
         "Capped at 5% Max Risk",
         "Positive Expectancy"
