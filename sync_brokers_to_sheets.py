@@ -192,11 +192,21 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
             ltp = float(pos.get("ltp", avg_cost))
             unrealized = float(pos.get("unrealized_pnl", (ltp - avg_cost) * qty))
         else:
-            # Fallback values if position is settled in holdings
+            # Fallback values if position is settled in holdings or broker offline
             qty = int(meta.get("shares", 2))
             avg_cost = float(meta.get("entry_price", 4861.80))
             ltp = avg_cost
-            unrealized = 0.0
+            try:
+                import yfinance as yf
+                full_sym = meta.get("full_sym", f"{sym_key}.NS")
+                yf_t = yf.Ticker(full_sym)
+                fast = yf_t.fast_info
+                last_p = getattr(fast, "last_price", None) or getattr(fast, "previous_close", None)
+                if last_p and not np.isnan(last_p) and last_p > 0:
+                    ltp = round(float(last_p), 2)
+            except Exception:
+                pass
+            unrealized = (ltp - avg_cost) * qty
 
         cap = qty * avg_cost
         val = qty * ltp
@@ -268,6 +278,18 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
             qty = float(meta.get("shares", 1.0))
             avg_cost = float(meta.get("entry_price", 100.0))
             ltp = avg_cost
+
+        # Fallback to yfinance if broker quote was unavailable or equal to avg_cost
+        if ltp == avg_cost:
+            try:
+                import yfinance as yf
+                yf_t = yf.Ticker(sym_key)
+                fast = yf_t.fast_info
+                last_p = getattr(fast, "last_price", None) or getattr(fast, "previous_close", None)
+                if last_p and not np.isnan(last_p) and last_p > 0:
+                    ltp = round(float(last_p), 2)
+            except Exception:
+                pass
 
         cap = qty * avg_cost
         val = qty * ltp
