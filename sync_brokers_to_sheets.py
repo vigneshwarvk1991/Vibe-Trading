@@ -541,19 +541,26 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
         trail_sl = r['sl']
         cushion_pct = (r['cmp'] - trail_sl) / r['cmp'] * 100.0 if r['cmp'] > 0 else 0.0
         
-        if trail_sl >= r['entry']:
+        if r['cmp'] < trail_sl:
+            risk_val = (r['entry'] - r['cmp']) * r['qty']
+            risk_str = f"Loss: -Rs {risk_val:,.2f}"
+            status_str = "⚠️ EXIT (Stop Breached)"
+            action_str = "EXIT"
+        elif trail_sl >= r['entry']:
             risk_str = f"Gain: Rs {(trail_sl - r['entry']) * r['qty']:,.2f} Locked"
             status_str = "GTT Active (Profit Locked)"
+            action_str = "HOLD"
         else:
             risk_val = (r['entry'] - trail_sl) * r['qty']
             risk_str = f"Risk: Rs {risk_val:,.2f}"
             status_str = "GTT Active (Hard SL 5%)"
+            action_str = "HOLD"
             
         tradebook_in_rows.append([
             r["date"],
             r["symbol"],
             r["sector"],
-            "HOLD",
+            action_str,
             r["qty"],
             f"Rs {r['entry']:,.2f}",
             f"Rs {r['capital']:,.2f}",
@@ -593,20 +600,27 @@ def reconcile_and_build_audit_payload(sync_to_sheet=False):
         trail_sl = r['sl']
         cushion_pct = (r['cmp'] - trail_sl) / r['cmp'] * 100.0 if r['cmp'] > 0 else 0.0
         
-        if trail_sl >= r['entry']:
+        if r['cmp'] < trail_sl:
+            risk_val = (r['entry'] - r['cmp']) * r['qty']
+            risk_str = f"Loss: -${risk_val:.2f}"
+            status_str = "⚠️ EXIT (Stop Breached)"
+            action_str = "EXIT"
+        elif trail_sl >= r['entry']:
             risk_str = f"Gain: ${(trail_sl - r['entry']) * r['qty']:.2f} Locked"
             gain_pct = (trail_sl - r['entry']) / r['entry'] * 100.0
             status_str = f"GTC Profit Lock (+{gain_pct:.1f}%)" if gain_pct > 1.0 else "GTC Breakeven Locked"
+            action_str = "HOLD"
         else:
             risk_val = (r['entry'] - trail_sl) * r['qty']
             risk_str = f"Risk: ${risk_val:.2f}"
             status_str = "GTC Active (SL Intact)"
+            action_str = "HOLD"
             
         tradebook_us_rows.append([
             r["date"],
             r["symbol"],
             r["sector"],
-            "HOLD",
+            action_str,
             r["qty"],
             f"${r['entry']:.2f}",
             f"${r['capital']:.2f}",
